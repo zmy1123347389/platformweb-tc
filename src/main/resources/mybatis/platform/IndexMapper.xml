@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.IndexDao">
+	<select id="countUserByCreateDate" resultType="java.lang.Long">
+		SELECT
+            count(id)
+		FROM
+            t_user
+        WHERE
+            1=1
+        <if test="date != null and date != ''">
+            AND DATE_FORMAT(create_time,'%Y-%m-%d') = #{date}
+        </if>
+	</select>
+
+    <select id="countOnlineUser" resultType="java.lang.Long">
+        SELECT
+          count(id)
+        FROM
+          t_user
+        WHERE
+          online = 1
+    </select>
+
+    <select id="countPayFlower" resultType="java.lang.Long">
+        SELECT
+          count(id)
+        FROM
+          t_account_book
+        WHERE
+          type = #{type}
+        <if test="date != null and date != ''">
+            AND DATE_FORMAT(create_time,'%Y-%m-%d') = #{date}
+        </if>
+    </select>
+</mapper>

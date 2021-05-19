@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.GiftDao">
+	<select id="list" resultType="com.behere.platform.domain.Gift">
+		SELECT
+			id,
+			name,
+			url,
+			flower
+		FROM
+			t_gift g WHERE deleted = 0
+	</select>
+    
+    <select id="queryGiftById" resultType="com.behere.platform.domain.Gift">
+        SELECT
+            id,
+			name,
+			url,
+			flower
+        FROM
+            t_gift g
+        WHERE
+            id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.behere.platform.domain.Gift">
+        UPDATE
+            t_gift
+        SET
+            name = #{name},
+            <if test="url != null and url != ''">
+            url = #{url},
+            </if>
+            flower = #{flower}
+        WHERE
+            id = #{id}
+    </update>
+
+    <insert id="save" parameterType="com.behere.platform.domain.Gift">
+        INSERT INTO t_gift (
+            url,
+            name,
+            flower
+        ) VALUES (
+            #{url},
+            #{name},
+            #{flower}
+        )
+    </insert>
+    
+    <update id="delete">
+        UPDATE
+          t_gift
+        SET
+          deleted = 1
+        WHERE
+          id = #{id}
+    </update>
+</mapper>

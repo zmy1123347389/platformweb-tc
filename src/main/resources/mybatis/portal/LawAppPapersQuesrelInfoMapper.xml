@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.behere.portal.dao.LawAppPapersQuesrelInfoDao">
+    <resultMap id="BaseResultMap" type="com.behere.portal.domain.LawAppPapersQuesrelInfo">
+        <result column="PAPER_ID" jdbcType="VARCHAR" property="paperId"/>
+        <result column="QUES_ID" jdbcType="VARCHAR" property="quesId"/>
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+        <result column="QUES_TYPE" jdbcType="VARCHAR" property="quesType"/>
+        <collection property="lawAppChoiceQuesInfo" ofType="com.behere.portal.domain.LawAppChoiceQuesInfo" column="id">
+            <id column="choId" jdbcType="VARCHAR" property="choId"/>
+            <result column="choName" jdbcType="VARCHAR" property="choName"/>
+            <result column="choOpa" jdbcType="VARCHAR" property="choOpa"/>
+            <result column="choOpb" jdbcType="VARCHAR" property="choOpb"/>
+            <result column="choOpc" jdbcType="VARCHAR" property="choOpc"/>
+            <result column="choOpd" jdbcType="VARCHAR" property="choOpd"/>
+            <result column="choOpe" jdbcType="VARCHAR" property="choOpe"/>
+            <result column="choOpf" jdbcType="VARCHAR" property="choOpf"/>
+            <result column="quesType" jdbcType="VARCHAR" property="quesType"/>
+            <result column="choAnsw" jdbcType="VARCHAR" property="choAnsw"/>
+            <result column="createUser" jdbcType="VARCHAR" property="createUser"/>
+            <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="modifyUser" jdbcType="VARCHAR" property="modifyUser"/>
+            <result column="modifyTime" jdbcType="TIMESTAMP" property="modifyTime"/>
+            <result column="choExam" jdbcType="VARCHAR" property="choExam"/>
+            <result column="choAnalysis" jdbcType="VARCHAR" property="choAnalysis"/>
+        </collection>
+        <collection property="lawAppEssayQuesInfo" ofType="com.behere.portal.domain.LawAppEssayQuesInfo" column="id">
+            <result column="essayId" jdbcType="VARCHAR" property="essayId"/>
+            <result column="essayName" jdbcType="VARCHAR" property="essayName"/>
+            <result column="essayAnsw" jdbcType="VARCHAR" property="essayAnsw"/>
+            <result column="createdBy" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="createdTime" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy"/>
+            <result column="updatedTime" jdbcType="TIMESTAMP" property="updatedTime"/>
+            <result column="quesType" jdbcType="VARCHAR" property="quesType"/>
+            <result column="choExam" jdbcType="VARCHAR" property="choExam"/>
+            <result column="choAnalysis" jdbcType="VARCHAR" property="choAnalysis"/>
+        </collection>
+        <collection property="lawAppFillQuesInfo" ofType="com.behere.portal.domain.LawAppFillQuesInfo" column="id">
+            <result column="fillId" jdbcType="VARCHAR" property="fillId"/>
+            <result column="fillName" jdbcType="VARCHAR" property="fillName"/>
+            <result column="fillAnsw" jdbcType="VARCHAR" property="fillAnsw"/>
+            <result column="createdBy" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="createdTime" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy"/>
+            <result column="updatedTime" jdbcType="TIMESTAMP" property="updatedTime"/>
+            <result column="quesType" jdbcType="VARCHAR" property="quesType"/>
+            <result column="choExam" jdbcType="VARCHAR" property="choExam"/>
+            <result column="choAnalysis" jdbcType="VARCHAR" property="choAnalysis"/>
+        </collection>
+        <collection property="lawAppJudgeQuesInfo" ofType="com.behere.portal.domain.LawAppJudgeQuesInfo" column="id">
+            <result column="judgeId" jdbcType="VARCHAR" property="judgeId"/>
+            <result column="judgeName" jdbcType="VARCHAR" property="judgeName"/>
+            <result column="judgeAnsw" jdbcType="VARCHAR" property="judgeAnsw"/>
+            <result column="createdBy" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="createdTime" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="updatedBy" jdbcType="VARCHAR" property="updatedBy"/>
+            <result column="updatedTime" jdbcType="TIMESTAMP" property="updatedTime"/>
+            <result column="quesType" jdbcType="VARCHAR" property="quesType"/>
+            <result column="choExam" jdbcType="VARCHAR" property="choExam"/>
+            <result column="choAnalysis" jdbcType="VARCHAR" property="choAnalysis"/>
+        </collection>
+    </resultMap>
+    <insert id="savePaper">
+    insert into lawapp_papers_quesrel_info (PAPER_ID, QUES_ID,
+      CREATED_BY, CREATED_TIME)
+    values (#{paperId,jdbcType=VARCHAR}, #{quesId,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR}, NOW())
+  </insert>
+
+    <!--通过试卷获取对应单选题-->
+    <select id="getScqChoName" resultMap="BaseResultMap">
+    select chioce.CHO_ID as choId, chioce.CHO_NAME as choName,chioce.CHO_OPA as choOpa,chioce.CHO_OPB as choOpb,
+    chioce.CHO_OPC as choOpc,chioce.CHO_OPD as choOpd,chioce.CHO_OPE as choOpe,chioce.CHO_OPF as choOpf,
+    chioce.CHO_ANSW as choAnsw,chioce.QUES_TYPE as quesType,chioce.CHO_EXAM as choExam,chioce.CHO_ANALYSIS as choAnalysis
+    from lawapp_papers_quesrel_info as papers,
+    lawapp_choice_ques_info as chioce
+    WHERE papers.QUES_ID=chioce.CHO_ID AND papers.QUES_TYPE='0' and  papers.PAPER_ID=#{paperId,jdbcType=VARCHAR}
+  </select>
+    <!--通过试卷获取对应多选题-->
+    <select id="getAqChoName" resultMap="BaseResultMap">
+    select chioce.CHO_ID as choId, chioce.CHO_NAME as choName,chioce.CHO_OPA as choOpa,chioce.CHO_OPB as choOpb,
+    chioce.CHO_OPC as choOpc,chioce.CHO_OPD as choOpd,chioce.CHO_OPE as choOpe,chioce.CHO_OPF as choOpf,
+    chioce.CHO_ANSW as choAnsw,chioce.QUES_TYPE as quesType,chioce.CHO_EXAM as choExam,chioce.CHO_ANALYSIS as choAnalysis
+    from lawapp_papers_quesrel_info as papers,
+    lawapp_choice_ques_info as chioce
+    WHERE papers.QUES_ID=chioce.CHO_ID AND papers.QUES_TYPE='1' and  papers.PAPER_ID=#{paperId,jdbcType=VARCHAR}
+  </select>
+    <!--根据试卷编号获取问答题-->
+    <select id="getAskQuesName" resultMap="BaseResultMap">
+    select essay.ESSAY_ID as essayId,essay.ESSAY_NAME as essayName,essay.ESSAY_ANSW as essayAnsw,essay.QUES_TYPE as quesType,
+    essay.CHO_EXAM as choExam,essay.CHO_ANALYSIS as choAnalysis
+    from lawapp_papers_quesrel_info as papers	,
+    lawapp_essay_ques_info as essay
+    WHERE papers.QUES_ID=essay.ESSAY_ID AND papers.QUES_TYPE='4' and  papers.PAPER_ID=#{paperId,jdbcType=VARCHAR}
+  </select>
+    <!--根据试卷id获取填空题-->
+    <select id="getFbQuesName" resultMap="BaseResultMap">
+    select fill.FILL_ID as fillId,fill.FILL_NAME as fillName,fill.FILL_ANSW as fillAnsw,fill.QUES_TYPE as quesType
+   ,fill.CHO_EXAM as choExam,fill.CHO_ANALYSIS as choAnalysis
+    from lawapp_papers_quesrel_info as papers,
+    lawapp_fill_ques_info as fill
+    WHERE papers.QUES_ID=fill.FILL_ID AND papers.QUES_TYPE='3' and  papers.PAPER_ID=#{paperId,jdbcType=VARCHAR}
+  </select>
+    <!--根据试卷编号获取判断题-->
+    <select id="getJqQuesName" resultMap="BaseResultMap">
+    select judge.JUDGE_ID as judgeId, judge.JUDGE_NAME as judgeName,judge.JUDGE_ANSW judgeAnsw,judge.QUES_TYPE as quesType
+   ,judge.CHO_EXAM as choExam,judge.CHO_ANALYSIS as choAnalysis
+    from lawapp_papers_quesrel_info as papers,
+    lawapp_judge_ques_info as judge
+    WHERE papers.QUES_ID=judge.JUDGE_ID AND papers.QUES_TYPE='2' and  papers.PAPER_ID=#{paperId,jdbcType=VARCHAR}
+  </select>
+
+    <!--根据题目编号等获取试卷信息-->
+    <select id="selectByQuesId" resultType="java.util.Map" parameterType="java.util.Map">
+        select * from lawapp_papers_quesrel_info as papers
+        WHERE 1=1
+        <if test="quesId != null and quesId != ''">
+            and papers.QUES_ID ='${quesId}'
+        </if>
+        <if test="paperId != null and paperId != ''">
+            and papers.PAPER_ID ='${paperId}'
+        </if>
+        <if test="quesType != null and quesType != ''">
+            and papers.QUES_TYPE ='${quesType}'
+        </if>
+    </select>
+    
+     <select id="qryPaperAll" resultType="java.util.Map" parameterType="java.util.Map">
+          SELECT * from v_ques_all 
+          where 1=1 
+          <if test="id != null and id != ''">
+            and id ='${id}'
+          </if>
+          <if test="type != null and type != ''">
+            and type ='${type}'
+          </if>
+    </select>
+    
+    <select id="qryCountPapersQuesrel" resultType="java.util.Map" parameterType="java.util.Map">
+        select count(*) as pcount from lawapp_papers_quesrel_info as papers
+        WHERE 1=1
+        <if test="quesId != null and quesId != ''">
+            and papers.QUES_ID ='${quesId}'
+        </if>
+        <if test="paperId != null and paperId != ''">
+            and papers.PAPER_ID ='${paperId}'
+        </if>
+        <if test="quesType != null and quesType != ''">
+            and papers.QUES_TYPE ='${quesType}'
+        </if>
+    </select>
+   
+    <select id="getAllList" resultType="java.util.Map" parameterType="java.util.Map">
+          SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+			lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='0' AND p.PAPER_ID='${paperId}'
+		 
+		UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='1' AND p.PAPER_ID='${paperId}'
+		 
+		 UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='2' AND p.PAPER_ID='${paperId}'
+		 
+		 UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='3' AND p.PAPER_ID='${paperId}'
+		 
+		 UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='4' AND p.PAPER_ID='${paperId}'
+		 
+	
+    </select>
+   
+
+
+</mapper>

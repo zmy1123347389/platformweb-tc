@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.VersionDao">
+
+	<select id="queryVersions" resultType="com.behere.platform.domain.Version">
+		SELECT
+			*
+		FROM
+			t_device_version
+	</select>
+
+	<select id="queryVersion" resultType="com.behere.platform.domain.Version">
+		SELECT * FROM t_device_version WHERE id = #{id}
+	</select>
+
+	<update id="updateVersion" parameterType="com.behere.platform.domain.Version">
+		UPDATE
+			t_device_version
+		SET
+			version_number = #{versionNumber},
+			force_update = #{forceUpdate},
+			update_content = #{updateContent},
+			url = #{url}
+		WHERE
+			id = #{id}
+	</update>
+
+
+	<select id="queryVersionSwitch" resultType="com.behere.platform.domain.VersionSwitch">
+		SELECT
+			*
+		FROM
+			t_switch
+		ORDER BY
+			version_no DESC LIMIT #{offset}, #{limit}
+	</select>
+
+    <update id="updateVersionSwitchOnOff" parameterType="com.behere.platform.domain.VersionSwitch">
+        UPDATE
+          t_switch
+        SET
+          on_off = #{onOff}
+        WHERE
+          id = #{id}
+    </update>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(*) FROM t_switch
+    </select>
+    
+    <select id="queryVersionSwitchById" resultType="com.behere.platform.domain.VersionSwitch">
+        SELECT * FROM t_switch WHERE id = #{id}
+    </select>
+
+    <insert id="save" parameterType="com.behere.platform.domain.VersionSwitch">
+        INSERT INTO t_switch (
+          version_no,
+          on_off
+        ) VALUES (
+          #{versionNo},
+          #{onOff}
+        )
+    </insert>
+</mapper>

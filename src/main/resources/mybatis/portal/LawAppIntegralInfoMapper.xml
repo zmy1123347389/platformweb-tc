@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.behere.portal.dao.LawAppIntegralInfoDao">
+    <resultMap id="BaseResultMap" type="com.behere.portal.domain.LawAppIntegralInfo">
+        <id column="I_ID" property="iId" jdbcType="INTEGER"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="INTEGRAL_TYPE" property="integralType" jdbcType="VARCHAR"/>
+        <result column="INTEGRAL_NUMBER" property="integralNumber" jdbcType="INTEGER"/>
+        <result column="REVISION" property="revision" jdbcType="INTEGER"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATED_TIME" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATED_TIME" property="updatedTime" jdbcType="TIMESTAMP"/>
+        <result column="integralSum" property="integralSum" jdbcType="VARCHAR"/>
+        <result column="integralRanking" property="integralRanking" jdbcType="VARCHAR"/>
+        <result column="lastTime" property="lastTime" jdbcType="TIMESTAMP"/>
+        <result column="unitName" property="unitName" jdbcType="VARCHAR"/>
+        <collection property="lawAppPoliceInfos" ofType="com.behere.portal.domain.LawAppPoliceInfo" column="id">
+            <id column="PRIMARY_ID" jdbcType="VARCHAR" property="primaryId"/>
+            <result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+            <result column="XP" javaType="String" property="xp"/>
+        </collection>
+    </resultMap>
+
+    <!--获取总积分-->
+   <select id="selectIntegralNum" resultMap="BaseResultMap">
+    select  SUM(INTEGRAL_NUMBER) as integralSum
+   		from lawapp_integral_info
+		where  USER_ID=#{userId,jdbcType=VARCHAR}
+  </select>
+  
+    <!-- 积分排名年月日-->
+  <select id="selectRanking" resultType="java.util.Map" parameterType="java.util.Map" >
+  
+        <!-- SELECT SUM(integral.INTEGRAL_NUMBER) AS integralRanking,police.USER_ID AS userId,
+        police.USER_NAME AS userName,police.XP AS xp,u.UNIT_NAME AS unitName
+        FROM
+        	lawapp_integral_info AS integral
+			LEFT JOIN 	lawapp_police_info AS police 
+			ON  integral.USER_ID = police.USER_ID
+			LEFT JOIN lawapp_unit_info u ON  u.UNIT_ID = police.DEPT_ID
+	    where
+        integral.CREATED_TIME &gt; #{lastTime} and integral.CREATED_TIME  &lt; NOW()
+        and police.USER_ID=integral.USER_ID
+        GROUP BY police.USER_ID , police.USER_NAME,police.XP
+        order by SUM(integral.INTEGRAL_NUMBER) desc limit 50 -->			
+					
+	
+	SELECT
+		a.scores,a.rank,
+		a.USER_ID AS userId,
+		i.xp,
+		i.user_name AS userName,
+		u.UNIT_NAME AS unitName
+	FROM
+		(
+			SELECT
+				SUM(a.INTEGRAL_NUMBER) AS scores,
+				a.USER_ID,
+				(
+					SELECT
+						count(DISTINCT(SCORES))
+					FROM
+						(
+							SELECT
+								SUM(b.INTEGRAL_NUMBER) AS SCORES,
+								b.USER_ID
+							FROM
+								lawapp_integral_info b
+							WHERE
+								b.user_id IN (
+									SELECT
+										P.USER_ID
+									FROM
+										LAWAPP_POLICE_INFO P
+									RIGHT JOIN (
+										SELECT
+											UI.*
+										FROM
+											LAWAPP_UNIT_INFO UI
+										LEFT JOIN LAWAPP_UNIT_INFO a ON UI.PARENT_ID = a.UNIT_ID
+										WHERE
+										<!-- UI.PARENT_ID = '${unitId}' OR  -->
+										UI.UNIT_ID = '${unitId}'
+									) UI ON P.DEPT_ID = UI.UNIT_ID
+									WHERE
+										P.USER_ID IS NOT NULL
+								)
+							AND
+								b.CREATED_TIME  &gt; #{lastTime} 
+							AND b.CREATED_TIME &lt;  NOW()
+							GROUP BY
+								b.USER_ID
+						) b
+					WHERE
+						b.SCORES > SUM(a.INTEGRAL_NUMBER)
+					ORDER BY
+						b.SCORES DESC
+				) + 1 AS rank
+			FROM
+				lawapp_integral_info a
+			WHERE
+				1 = 1
+			AND a.user_id IN (
+				SELECT
+					P.USER_ID
+				FROM
+					LAWAPP_POLICE_INFO P
+				RIGHT JOIN (
+					SELECT
+						UI.*
+					FROM
+						LAWAPP_UNIT_INFO UI
+					LEFT JOIN LAWAPP_UNIT_INFO a ON UI.PARENT_ID = a.UNIT_ID
+					WHERE
+					<!-- UI.PARENT_ID = '${unitId}' OR  -->
+					UI.UNIT_ID = '${unitId}'
+				) UI ON P.DEPT_ID = UI.UNIT_ID
+				WHERE
+					P.USER_ID IS NOT NULL
+			) AND 
+			a.CREATED_TIME &gt; #{lastTime} and a.CREATED_TIME &lt; NOW()
+			GROUP BY
+				a.USER_ID
+			ORDER BY
+				SUM(a.INTEGRAL_NUMBER) DESC
+		) a
+		LEFT JOIN LAWAPP_POLICE_INFO i ON a.USER_ID = i.USER_ID
+		LEFT JOIN lawapp_unit_info u ON u.UNIT_ID = i.DEPT_ID
+		ORDER BY 	a.scores DESC
+		LIMIT 50
+	  </select>
+	  
+	   <!-- 积分总排名 -->
+	  <select id="qryJfpmPagesByPro" resultType="java.util.Map" parameterType="java.util.Map">
+	    SELECT 
+			a.scores, a.USER_ID as userId,a.rank
+			,i.xp,i.user_name as userName
+			FROM (
+	       SELECT 
+			SUM(a.INTEGRAL_NUMBER) AS scores, a.USER_ID 
+			,( SELECT count(DISTINCT(SCORES)) FROM(
+				SELECT SUM(b.INTEGRAL_NUMBER) AS SCORES, b.USER_ID
+					FROM lawapp_integral_info b
+				GROUP BY b.USER_ID
+				) b  
+				WHERE b.SCORES > SUM(a.INTEGRAL_NUMBER) 
+				ORDER BY b.SCORES DESC
+			)+ 1 AS rank
+			 FROM  lawapp_integral_info a
+			WHERE  
+			 1=1 
+			 <if test="userId != null and userId !=''">
+				AND  a.USER_ID ='${userId}'
+			 </if>
+			GROUP BY a.USER_ID
+		) a  LEFT JOIN 	 LAWAPP_POLICE_INFO i ON a.USER_ID=i.USER_ID
+			ORDER BY a.scores DESC
+	  </select>
+	  
+	   <!-- 积分排名 市单位 -->
+	   <select id="qryJfpmPages" resultType="java.util.Map" parameterType="java.util.Map">
+	   <!-- 
+	       SELECT 
+			SUM(a.INTEGRAL_NUMBER) AS scores, a.USER_ID AS userId
+			,i.xp,i.user_name as userName
+			,(
+				SELECT count(DISTINCT(SCORES)) FROM(
+					SELECT SUM(b.INTEGRAL_NUMBER) AS SCORES, b.USER_ID 
+						FROM lawapp_integral_info b
+					where  b.user_id in (
+						SELECT
+							P.USER_ID
+						FROM
+							LAWAPP_POLICE_INFO P
+						RIGHT JOIN (
+							SELECT
+								UI.*
+							FROM
+								LAWAPP_UNIT_INFO UI
+							LEFT JOIN LAWAPP_UNIT_INFO a 
+					 		ON UI.PARENT_ID = a.UNIT_ID	
+							WHERE
+								UI.PARENT_ID = '${unitId}'  OR UI.UNIT_ID ='${unitId}'
+						) UI ON P.DEPT_ID = UI.UNIT_ID
+					)
+					GROUP BY b.USER_ID
+				) b  
+				WHERE b.SCORES > SUM(a.INTEGRAL_NUMBER) 
+				ORDER BY b.SCORES DESC
+			)+ 1 AS rank
+			 FROM  lawapp_integral_info a
+			 LEFT JOIN 	 LAWAPP_POLICE_INFO i ON a.USER_ID=i.USER_ID
+			WHERE  
+			 1=1  
+			and a.user_id in (
+				SELECT
+					P.USER_ID
+				FROM
+					LAWAPP_POLICE_INFO P
+				RIGHT JOIN (
+					SELECT
+						UI.*
+					FROM
+						LAWAPP_UNIT_INFO UI
+					LEFT JOIN LAWAPP_UNIT_INFO a 
+			 		ON UI.PARENT_ID = a.UNIT_ID	
+					WHERE
+						UI.PARENT_ID = '${unitId}'  OR UI.UNIT_ID ='${unitId}'
+				) UI ON P.DEPT_ID = UI.UNIT_ID
+			)
+			GROUP BY a.USER_ID
+			ORDER BY SUM(a.INTEGRAL_NUMBER) DESC
+			
+			 -->
+			
+			
+			SELECT a.scores, a.USER_ID AS userId,a.rank,
+			i.xp,
+				i.user_name AS userName
+			FROM(
+				SELECT
+					SUM(a.INTEGRAL_NUMBER) AS scores,
+					a.USER_ID ,
+					
+					(
+						SELECT
+							count(DISTINCT(SCORES))
+						FROM
+							(
+								SELECT
+									SUM(b.INTEGRAL_NUMBER) AS SCORES,
+									b.USER_ID
+								FROM
+									lawapp_integral_info b
+								WHERE
+									b.user_id IN (
+										SELECT
+											P.USER_ID
+										FROM
+											LAWAPP_POLICE_INFO P
+										RIGHT JOIN (
+											SELECT
+												UI.*
+											FROM
+												LAWAPP_UNIT_INFO UI
+											LEFT JOIN LAWAPP_UNIT_INFO a ON UI.PARENT_ID = a.UNIT_ID
+											WHERE
+												UI.PARENT_ID = '${unitId}'
+											OR UI.UNIT_ID = '${unitId}'
+										) UI ON P.DEPT_ID = UI.UNIT_ID
+									)
+								GROUP BY
+									b.USER_ID
+							) b
+						WHERE
+							b.SCORES > SUM(a.INTEGRAL_NUMBER)
+						ORDER BY
+							b.SCORES DESC
+					) + 1 AS rank
+				FROM
+					lawapp_integral_info a
+				WHERE
+					1 = 1
+				AND a.user_id IN (
+					SELECT
+						P.USER_ID
+					FROM
+						LAWAPP_POLICE_INFO P
+					RIGHT JOIN (
+						SELECT
+							UI.*
+						FROM
+							LAWAPP_UNIT_INFO UI
+						LEFT JOIN LAWAPP_UNIT_INFO a ON UI.PARENT_ID = a.UNIT_ID
+						WHERE
+							UI.PARENT_ID = '${unitId}'
+						OR UI.UNIT_ID = '${unitId}'
+					) UI ON P.DEPT_ID = UI.UNIT_ID
+				WHERE P.USER_ID IS NOT NULL
+				)
+				GROUP BY
+					a.USER_ID
+				) a LEFT JOIN LAWAPP_POLICE_INFO i ON a.USER_ID = i.USER_ID
+				ORDER BY
+				a.scores DESC
+
+  </select>
+  
+  
+    <select id="qryByUserId" resultType="java.util.Map" parameterType="com.behere.portal.domain.LawAppIntegralInfo">
+	    SELECT  
+	    	USER_ID  as userId ,
+	      INTEGRAL_TYPE  as jfType,
+	      SUM(INTEGRAL_NUMBER) as  jfNum
+	    FROM lawapp_integral_info
+	    WHERE     1=1 
+	    <if test="iId != null">
+			 and  I_ID = #{iId,jdbcType=INTEGER}
+	    </if>
+	    <if test="userId != null">
+			 and  USER_ID = #{userId,jdbcType=VARCHAR}
+	    </if>
+	    GROUP BY  INTEGRAL_TYPE,USER_ID
+	    ORDER BY CREATED_TIME DESC
+  </select>
+  
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lawapp_integral_info
+    where I_ID = #{iId,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertIntegral" parameterType="com.behere.portal.domain.LawAppIntegralInfo">
+    insert into lawapp_integral_info ( USER_ID, INTEGRAL_TYPE,
+      INTEGRAL_NUMBER, CREATED_BY,CREATED_TIME)
+    values (#{userId,jdbcType=VARCHAR}, #{integralType,jdbcType=VARCHAR},
+      #{integralNumber,jdbcType=INTEGER},  #{createdBy,jdbcType=VARCHAR},NOW())
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.behere.portal.domain.LawAppIntegralInfo">
+        insert into lawapp_integral_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="iId != null">
+                I_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="integralType != null">
+                INTEGRAL_TYPE,
+            </if>
+            <if test="integralNumber != null">
+                INTEGRAL_NUMBER,
+            </if>
+            <if test="revision != null">
+                REVISION,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedTime != null">
+                UPDATED_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="iId != null">
+                #{iId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="integralType != null">
+                #{integralType,jdbcType=VARCHAR},
+            </if>
+            <if test="integralNumber != null">
+                #{integralNumber,jdbcType=INTEGER},
+            </if>
+            <if test="revision != null">
+                #{revision,jdbcType=INTEGER},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null">
+                #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.behere.portal.domain.LawAppIntegralInfo">
+        update lawapp_integral_info
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="integralType != null">
+                INTEGRAL_TYPE = #{integralType,jdbcType=VARCHAR},
+            </if>
+            <if test="integralNumber != null">
+                INTEGRAL_NUMBER = #{integralNumber,jdbcType=INTEGER},
+            </if>
+            <if test="revision != null">
+                REVISION = #{revision,jdbcType=INTEGER},
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null">
+                UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where I_ID = #{iId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.behere.portal.domain.LawAppIntegralInfo">
+    update lawapp_integral_info
+    set USER_ID = #{userId,jdbcType=INTEGER},
+      INTEGRAL_TYPE = #{integralType,jdbcType=VARCHAR},
+      INTEGRAL_NUMBER = #{integralNumber,jdbcType=INTEGER},
+      REVISION = #{revision,jdbcType=INTEGER},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP}
+    where I_ID = #{iId,jdbcType=INTEGER}
+  </update>
+  
+  
+ 
+</mapper>

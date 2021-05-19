@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.BannerDao">
+	<select id="queryBanners" resultType="com.behere.platform.domain.BannerDO">
+		SELECT
+			id,
+			name,
+			image,
+			url,
+			create_time
+		FROM
+			t_banner
+		WHERE
+			deleted = 0
+	</select>
+
+	<select id="queryBanner" resultType="com.behere.platform.domain.BannerDO">
+		SELECT
+			id,
+			name,
+			image,
+			url,
+			create_time
+		FROM
+			t_banner
+		WHERE
+			id = #{bannerId}
+	</select>
+
+	<update id="updateBanner" parameterType="com.behere.platform.domain.BannerDO">
+		UPDATE
+			t_banner
+		SET
+			<if test="image != null and image != ''">
+				image = #{image},
+			</if>
+			name = #{name},
+			url = #{url}
+		WHERE
+			id = #{id}
+	</update>
+
+	<insert id="saveBanner" parameterType="com.behere.platform.domain.BannerDO">
+		INSERT INTO t_banner (
+			name,
+			image,
+			url
+		) VALUES (
+			#{name},
+			#{image},
+			#{url}
+		)
+	</insert>
+
+	<delete id="deleteBanner">
+		DELETE FROM
+			t_banner
+		WHERE
+			id = #{bannerId}
+	</delete>
+</mapper>

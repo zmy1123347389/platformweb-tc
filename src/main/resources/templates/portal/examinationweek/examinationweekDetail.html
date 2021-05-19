@@ -1,0 +1,588 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit"/>
+<meta name="force-rendering" content="webkit"/>
+<title>铜川市公安局E起学法</title>
+<link type="text/css" rel="stylesheet" href="css/style.css" />
+<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+
+<link href="/examination/main.css" rel="stylesheet" type="text/css" />
+<link href="/examination/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="/examination/test.css" rel="stylesheet" type="text/css" />
+<style>
+.hasBeenAnswer {
+	background: #5d9cec;
+	color:#fff;
+}
+</style>
+
+<style type="text/css">
+	*{margin:0;padding:0;list-style-type:none;}
+	a,img{border:0;}
+	/* leftsead */
+	#leftsead{width:131px;height:143px;position:fixed;top:258px;right:0px;}
+	*html #leftsead{margin-top:258px;position:absolute;top:expression(eval(document.documentElement.scrollTop));}
+	#leftsead li{width:131px;height:53px;}
+	#leftsead li img{float:right;border-bottom-left-radius:5px;border-top-left-radius:5px;}
+	#leftsead li a{height:49px;float:right;display:block;min-width:47px;max-width:205px;}
+	#leftsead li a .shows{display:block;}
+	#leftsead li a .hides{margin-right:-166px;cursor:pointer;cursor:hand;}
+	#leftsead li a.youhui .hides{display:none;position:absolute;right:216px;top:2px;}
+</style>
+</head>
+
+<body>
+<div class="header">
+  <a href="/index"><img src="/portal/images/logo.jpg" /></a>
+</div>
+<div class="main">
+	<!--nr start-->
+	<div class="test_main">
+		<div class="nr_left">
+			<div class="test">
+				<form action="" method="post">
+					<div class="test_title">
+						<p class="test_time">
+							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">00:00</b>
+						</p>
+						<font><input type="button" name="test_jiaojuan" value="交卷"></font>
+					</div>
+					<div class="test_content">
+						<div class="test_content_title">
+							<h2>单选题</h2>
+							<p>
+								<span>共</span><i class="content_lit singleChoiceAll">0</i><span>题，</span><span>合计</span><i class="content_fs" id="singleChoiceScore">0</i><span>分</span>
+							</p>
+						</div>
+					</div>
+					<div class="test_content_nr singleChoiceQuestion">
+						<ul>
+						</ul>
+					</div>
+					<div class="test_content">
+						<div class="test_content_title">
+							<h2>多选题</h2>
+							<p>
+								<span>共</span><i class="content_lit multipleChoiceAll">0</i><span>题，</span><span>合计</span><i class="content_fs" id="multipleChoiceScore">0</i><span>分</span>
+							</p>
+						</div>
+					</div>
+					<div class="test_content_nr multipleChoiceQuestion">
+						<ul>
+						</ul>
+					</div>
+					<div class="test_content">
+						<div class="test_content_title">
+							<h2>判断题</h2>
+							<p>
+								<span>共</span><i class="content_lit estimateAll">0</i><span>题，</span><span>合计</span><i class="content_fs" id="estimateScore">0</i><span>分</span>
+							</p>
+						</div>
+					</div>
+					<div class="test_content_nr estimateQuestion">
+						<ul>
+						</ul>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="nr_right">
+			<div class="nr_rt_main">
+				<div class="rt_nr1">
+					<div class="rt_nr1_title" style="margin-top: 75px;">
+						<h1>
+							<i class="icon iconfont">&#xe692;</i>答题卡
+						</h1>
+						<p class="test_time">
+							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">00:00</b>
+						</p>
+					</div>
+					<div class="rt_content">
+						<div class="rt_content_tt">
+							<h2>单选题</h2>
+							<p>
+								<span>共</span><i class="content_lit singleChoice">0</i><span>题</span>
+							</p>
+						</div>
+						<div class="rt_content_nr answerSheet singleChoiceId">
+							<ul>
+							</ul>
+						</div>
+					</div>
+					<div class="rt_content">
+						<div class="rt_content_tt">
+							<h2>多选题</h2>
+							<p>
+								<span>共</span><i class="content_lit multipleChoice">0</i><span>题</span>
+							</p>
+						</div>
+						<div class="rt_content_nr answerSheet multipleChoiceId">
+							<ul>
+							</ul>
+						</div>
+					</div>
+					<div class="rt_content">
+						<div class="rt_content_tt">
+							<h2>判断题</h2>
+							<p>
+								<span>共</span><i class="content_lit estimate">0</i><span>题</span>
+							</p>
+						</div>
+						<div class="rt_content_nr answerSheet estimateId">
+							<ul>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--nr end-->
+	<div class="foot"></div>
+</div>
+
+<div id="leftsead">
+	<ul>
+	     <li>
+			<a id="top_btn">
+				<img src="/rightTool/images/foot03/ll06.png" width="47" height="49" class="hides"/>
+				<img src="/rightTool/images/foot03/l06.png" width="47" height="49" class="shows" />
+			</a>
+		</li>
+		<li>
+			<a class="youhui">
+				<img src="/rightTool/images/foot03/l03.png" width="47" height="49" class="shows" />
+				<img src="/rightTool/images/foot03/ewm2.jpg" style="height: 320px !important;width: 131px !important;" class="hides" usemap="#taklhtml"/>
+			</a>
+		</li>
+		<li>
+			<a href="">
+				<img src="/rightTool/images/foot03/ll02.png" width="166" height="49" class="hides"/>
+				<img src="/rightTool/images/foot03/l04.png" width="47" height="49" class="shows" />
+			</a>
+		</li>
+		<li>
+			<a class="youhui">
+				<img src="/rightTool/images/foot03/l02.png" width="47" height="49" class="shows" />
+				<img src="/rightTool/images/foot03/ewm3.jpg" style="height: 151px !important;width: 131px !important;" class="hides" usemap="#taklhtml"/>
+			</a>
+		</li>
+	</ul>
+</div>
+</body>
+<script src="/examination/jquery.easy-pie-chart.js"></script>
+<!--时间js-->
+<script src="/examination/time/jquery.countdown.js"></script>
+<script>
+var param = window.location.href.split("?")[1];
+
+var scqType =  param.split("&")[0];
+scqType = scqType.split("=")[1];
+
+var paperId =  param.split("&")[1];
+paperId = paperId.split("=")[1];
+
+var time = searchCheckExamination(paperId,scqType);
+$('.alt-1').html(time)
+
+window.jQuery(function($) {
+	"use strict";
+	
+	$('time').countDown({
+		with_separators : false
+	});
+	$('.alt-1').countDown({
+		css_class : 'countdown-alt-1'
+	});
+	$('.alt-2').countDown({
+		css_class : 'countdown-alt-2'
+	});
+});
+
+$(function() {
+	
+	//单选
+	var singleChoiceCount = 0;
+	var singleChoiceHtml = "";
+	var singleChoiceIdHtml = "";
+	//多选
+	var multipleChoiceCount = 0;
+	var multipleChoiceHtml = "";
+	var multipleChoiceIdHtml = "";
+	//判断
+	var estimateCount = 0;
+	var estimateHtml = "";
+	var estimateIdHtml = "";
+	
+	$.post("/exam/getQuesAll?paperId="+paperId+"&scqType="+scqType,
+   	function(data){
+		//验证试卷
+		if(!isEmpty(data.respCode) && data.respCode == "-1"){
+			toastr.warning(data.respDesc);
+		}
+		var jsonObj = data;
+		//总题数
+		var count = jsonObj.length;
+		for(var i = 0; i < jsonObj.length; i++){
+			
+			var type = jsonObj[i].type;
+			
+			//单选题
+			if(type == '0'){
+				singleChoiceCount ++;
+				var initCount = singleChoiceCount -1 ;
+				singleChoiceHtml += 
+				"<li id='qu_0_"+ initCount +"'>"+
+						"<div class='test_content_nr_tt'>"+
+							"<i>"+singleChoiceCount+"</i><span>(1分)</span><font>"+jsonObj[i].name+"</font><b class='icon iconfont'>&#xe881;</b>"+
+						"</div>"+
+						
+						"<input type='hidden' id='answerSingleChoice_"+singleChoiceCount+"_id' value='"+jsonObj[i].id+"'/>"+
+						
+						"<input type='hidden' id='answerSingleChoice_"+singleChoiceCount+"' value='"+jsonObj[i].answ+"'/>"+
+						
+						"<div class='test_content_nr_main'>"+
+							"<ul>"+
+								"<li class='option'>"+
+									"<input type='radio' class='radioOrCheck' name='answerSingleChoice_"+singleChoiceCount+"' value='A' id='0_answer_"+singleChoiceCount+"_option_1'/>"+
+									"<label for='0_answer_"+singleChoiceCount+"_option_1'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opa+"</p>"+
+									"</label>"+
+								"</li>"+
+								"<li class='option'>"+
+									"<input type='radio' class='radioOrCheck' name='answerSingleChoice_"+singleChoiceCount+"' value='B' id='0_answer_"+singleChoiceCount+"_option_2'/>"+
+									"<label for='0_answer_"+singleChoiceCount+"_option_2'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opb+"</p>"+
+									"</label>"+
+								"</li>"+
+								"<li class='option'>"+
+									"<input type='radio' class='radioOrCheck' name='answerSingleChoice_"+singleChoiceCount+"' value='C' id='0_answer_"+singleChoiceCount+"_option_3'/>"+
+									"<label for='0_answer_"+singleChoiceCount+"_option_3'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opc+"</p>"+
+									"</label>"+
+								"</li>"+
+							
+								"<li class='option'>"+
+									"<input type='radio' class='radioOrCheck' name='answerSingleChoice_"+singleChoiceCount+"' value='D' id='0_answer_"+singleChoiceCount+"_option_4'/>"+
+									"<label for='0_answer_"+singleChoiceCount+"_option_4'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opd+"</p>"+
+									"</label>"+
+								"</li>"+
+							"</ul>"+
+						"</div>"+
+				"</li>";
+				singleChoiceIdHtml += "<li><a href='#qu_0_"+initCount+"'>"+singleChoiceCount+"</a></li>";
+			}
+			
+			
+			//多选题
+			if(type == '1'){
+				multipleChoiceCount ++;
+				var initCount = multipleChoiceCount -1 ;
+				multipleChoiceHtml += 
+				"<li id='qu_1_"+ initCount +"'>"+
+						"<div class='test_content_nr_tt'>"+
+							"<i>"+multipleChoiceCount+"</i><span>(1分)</span><font>"+jsonObj[i].name+"</font><b class='icon iconfont'>&#xe881;</b>"+
+						"</div>"+
+						
+						"<input type='hidden' id='answerMultipleChoice_"+multipleChoiceCount+"_id' value='"+jsonObj[i].id+"'/>"+
+						"<input type='hidden' id='answerMultipleChoice_"+multipleChoiceCount+"' value='"+jsonObj[i].answ+"'/>"+
+						
+						"<div class='test_content_nr_main'>"+
+							"<ul>"+
+								"<li class='option'>"+
+									"<input type='checkbox' class='radioOrCheck' name='answerMultipleChoice_"+multipleChoiceCount+"' value='A' id='1_answer_"+multipleChoiceCount+"_option_1'/>"+
+									"<label for='1_answer_"+multipleChoiceCount+"_option_1'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opa+"</p>"+
+									"</label>"+
+								"</li>"+
+								"<li class='option'>"+
+									"<input type='checkbox' class='radioOrCheck' name='answerMultipleChoice_"+multipleChoiceCount+"' value='B' id='1_answer_"+multipleChoiceCount+"_option_2'/>"+
+									"<label for='1_answer_"+multipleChoiceCount+"_option_2'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opb+"</p>"+
+									"</label>"+
+								"</li>"+
+								"<li class='option'>"+
+									"<input type='checkbox' class='radioOrCheck' name='answerMultipleChoice_"+multipleChoiceCount+"' value='C' id='1_answer_"+multipleChoiceCount+"_option_3'/>"+
+									"<label for='1_answer_"+multipleChoiceCount+"_option_3'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opc+"</p>"+
+									"</label>"+
+								"</li>"+
+							
+								"<li class='option'>"+
+									"<input type='checkbox' class='radioOrCheck' name='answerMultipleChoice_"+multipleChoiceCount+"' value='D' id='1_answer_"+multipleChoiceCount+"_option_4'/>"+
+									"<label for='1_answer_"+multipleChoiceCount+"_option_4'>"+
+										"<p class='ue' style='display: inline;'>"+jsonObj[i].opd+"</p>"+
+									"</label>"+
+								"</li>"+
+							"</ul>"+
+						"</div>"+
+				"</li>";
+				multipleChoiceIdHtml += "<li><a href='#qu_1_"+initCount+"'>"+multipleChoiceCount+"</a></li>";
+			}
+			
+			//判断题
+			if(type == '2'){
+				estimateCount ++;
+				var initCount = estimateCount -1 ;
+				estimateHtml += 
+				"<li id='qu_2_"+ initCount +"'>"+
+						"<div class='test_content_nr_tt'>"+
+							"<i>"+estimateCount+"</i><span>(1分)</span><font>"+jsonObj[i].name+"</font><b class='icon iconfont'>&#xe881;</b>"+
+						"</div>"+
+						
+						"<input type='hidden' id='answerEstimate_"+estimateCount+"_id' value='"+jsonObj[i].id+"'/>"+
+						"<input type='hidden' id='answerEstimate_"+estimateCount+"' value='"+jsonObj[i].answ+"'/>"+
+						
+						"<div class='test_content_nr_main'>"+
+							"<ul>"+
+								"<li class='option'>"+
+									"<input type='radio' class='radioOrCheck' name='answerEstimate_"+estimateCount+"' value='0' id='2_answer_"+estimateCount+"_option_1' value='0'/>"+
+									"<label for='2_answer_"+estimateCount+"_option_1'>"+
+										"<p class='ue' style='display: inline;'>对</p>"+
+									"</label>"+
+								"</li>"+
+								"<li class='option'>"+
+									"<input type='radio' class='radioOrCheck' name='answerEstimate_"+estimateCount+"' value='1' id='2_answer_"+estimateCount+"_option_2' value='1'/>"+
+									"<label for='2_answer_"+estimateCount+"_option_2'>"+
+										"<p class='ue' style='display: inline;'>错</p>"+
+									"</label>"+
+								"</li>"+
+							"</ul>"+
+						"</div>"+
+				"</li>";
+				estimateIdHtml += "<li><a href='#qu_2_"+initCount+"'>"+estimateCount+"</a></li>";
+			}
+		}
+		
+		$(".singleChoiceAll").html(singleChoiceCount);
+		$(".singleChoice").html(singleChoiceCount);
+		$(".singleChoiceQuestion ul").append(singleChoiceHtml)
+		$(".singleChoiceId ul").append(singleChoiceIdHtml)
+		
+		
+		$(".multipleChoiceAll").html(multipleChoiceCount);
+		$(".multipleChoice").html(multipleChoiceCount);
+		$(".multipleChoiceQuestion ul").append(multipleChoiceHtml)
+		$(".multipleChoiceId ul").append(multipleChoiceIdHtml)
+		
+		$(".estimateAll").html(estimateCount);
+		$(".estimate").html(estimateCount);
+		$(".estimateQuestion ul").append(estimateHtml)
+		$(".estimateId ul").append(estimateIdHtml)
+		});
+	$('li.option label').click(function() {
+		var examId = $(this).closest('.test_content_nr_main').closest('li').attr('id'); // 得到题目ID
+		var cardLi = $('a[href=#' + examId + ']'); // 根据题目ID找到对应答题卡
+		// 设置已答题
+		if(!cardLi.hasClass('hasBeenAnswer')){
+			cardLi.addClass('hasBeenAnswer');
+		}
+	});
+	
+	$("input[name=test_jiaojuan]").click(function(){
+		var scqNum = 0;
+		var mcqNum = 0;
+		var jqNum = 0;
+		
+		var scqPaper = "";
+		var acqPaper = "";
+		var jcqPaper = "";
+		
+		var paperTimed = "4";
+		
+		//单选答案
+		if(singleChoiceCount  >0 ){
+			var singleChoiceArray =  new Array();
+			for(var i = 1 ; i < singleChoiceCount+1 ; i ++){
+				var name = "answerSingleChoice_"+i;
+				var answer = $("input[name='"+name+"']:checked").val();
+				var rightAnswer = $("#"+name).val();
+				var id = $("#"+name+"_id").val();
+				
+				var result;
+				if(answer == rightAnswer){
+					scqNum ++;
+					result = ","+id+"-"+1;
+				}else{
+					result = ","+id+"-"+0;
+				}
+				scqPaper += result;
+			}
+			scqPaper = scqPaper.substring(1);
+		}
+		//多选答案
+		if(multipleChoiceCount  >0 ){
+			for(var i = 1 ; i < multipleChoiceCount+1 ; i ++){
+				var name = "answerMultipleChoice_"+i;
+				
+				var arry = new Array();
+				var answer = "";
+	            //循环所有选中的值
+	            $("input[name='"+name+"']:checked").each(function(index, element) {
+	                answer += $(this).val();
+	            });
+	            
+				var rightAnswer = $("#"+name).val();
+				var id = $("#"+name+"_id").val();
+				
+				var result;
+				if(answer == rightAnswer){
+					mcqNum ++;
+					result = ","+id+"-"+1;
+				}else{
+					result = ","+id+"-"+0;
+				}
+				acqPaper += result;
+			}
+			acqPaper = acqPaper.substring(1);
+		}
+		//判断答案
+		if(estimateCount  >0 ){
+			for(var i = 1 ; i < estimateCount+1 ; i ++){
+				var name = "answerEstimate_"+i;
+				var answer = $("input[name='"+name+"']:checked").val();
+				var rightAnswer = $("#"+name).val();
+				var id = $("#"+name+"_id").val();
+				
+				var result;
+				if(answer == rightAnswer){
+					jqNum ++;
+					result = ","+id+"-"+1;
+				}else{
+					result = ","+id+"-"+0;
+				}
+				jcqPaper += result;
+			}
+			jcqPaper = jcqPaper.substring(1);
+		}
+		
+		let formData = new FormData();
+		formData.append('scqType', scqType);
+		formData.append('paperId', paperId);
+		formData.append('paperTimed', paperTimed);
+		
+		formData.append('apptype', 'tc');
+		
+		formData.append('scqNum', scqNum);
+		formData.append('mcqNum', mcqNum);
+		formData.append('jqNum', jqNum);
+		
+		formData.append('scqPaper', scqPaper);
+		formData.append('acqPaper', acqPaper);
+		formData.append('jcqPaper', jcqPaper);
+		
+		 $.ajax({    
+	         url: "/exam/savePaper",
+	         type: 'POST',    
+	         data: formData,    
+	         dataType: 'JSON',    
+	         cache: false,    
+	         processData: false,    
+	         contentType: false    
+	         , beforeSend:function(XMLHttpRequest){
+	        	 $("input[name=test_jiaojuan]").prop("disabled",true);
+	         }
+	     }).done(function(data){
+	    	 var paperRScores = data.paperRScores;
+	    	 var integralNumber = data.integralNumber;
+	    	 
+	    	 $("input[name=test_jiaojuan]").prop("disabled",false);
+	    	 window.location.href = "/portal/examinationweekMsg?scqType="+scqType+"&paperId="+paperId+"&paperRScores="+paperRScores+"&integralNumber="+integralNumber;
+	     });
+	})
+});
+
+function searchCheckExamination(paperId,scqType){
+	var flag = false;//全局变量，以便下面做判断
+	var result = "";
+	$.ajax({    
+         url: "/exam/selectPapersInfo?paperId="+paperId+"&scqType="+scqType,
+         type: 'POST',    
+         dataType: 'JSON',    
+         cache: false,    
+         processData: false,    
+         contentType: false,
+      	 async:false
+     }).done(function(data){
+    	var paperTime = data[0].paperTime;
+    	if(!isEmpty(paperTime)){
+    		result = formatSeconds(paperTime*60);
+    		
+    		var scqNum = data[0].scqNum;
+        	var scqSScores = data[0].scqSScores;
+        	var jqNum = data[0].jqNum;
+        	var jqSScores = data[0].jqSScores;
+        	var aqNum = data[0].aqNum;
+        	var aqSScores = data[0].aqSScores;
+        	
+        	var scqSScoresAll = parseInt(scqNum)*parseInt(scqSScores);
+        	var jqSScoresAll = parseInt(jqNum)*parseInt(jqSScores);
+        	var aqSScoresAll = parseInt(aqNum)*parseInt(aqSScores);
+        	$("#singleChoiceScore").html(scqSScoresAll);
+        	$("#multipleChoiceScore").html(jqSScoresAll);
+        	$("#estimateScore").html(aqSScoresAll);
+    	}
+		flag = true;
+		
+     });
+	if(flag){
+		return result;
+    } 
+}
+
+function formatSeconds(a) {   
+	var hh = parseInt(a/3600);  
+	if(hh<10) hh = "0" + hh;  
+	var mm = parseInt((a-hh*3600)/60);  
+	if(mm<10) mm = "0" + mm;  
+	var ss = parseInt((a-hh*3600)%60);  
+	if(ss<10) ss = "0" + ss;  
+	var length = hh + ":" + mm + ":" + ss;  
+	if(a>0){  
+	  return length;  
+	}else{  
+	  return "NaN";  
+	}  
+}  
+
+function isEmpty(value){
+	if(value == null || value == "" || value == "undefined" || value == undefined || value == "null"){
+		return true;
+    }else{
+    	//防止非字符串存在
+    	value += "";
+    	value = value.replace(/\s/g,"");
+        if(value == ""){
+            return true;
+        }
+        return false;
+    }
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("#leftsead a").hover(function(){
+		if($(this).prop("className")=="youhui"){
+			$(this).children("img.hides").show();
+		}else{
+			$(this).children("img.hides").show();
+			$(this).children("img.shows").hide();
+			$(this).children("img.hides").animate({marginRight:'0px'},'slow'); 
+		}
+	},function(){ 
+		if($(this).prop("className")=="youhui"){
+			$(this).children("img.hides").hide('slow');
+		}else{
+			$(this).children("img.hides").animate({marginRight:'-143px'},'slow',function(){$(this).hide();$(this).next("img.shows").show();});
+		}
+	});
+
+	$("#top_btn").click(function(){if(scroll=="off") return;$("html,body").animate({scrollTop: 0}, 600);});
+
+});
+</script>
+</html>

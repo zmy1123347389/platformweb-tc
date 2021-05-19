@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.behere.portal.dao.LawAppExaminPapersInfoDao">
+    <resultMap id="BaseResultMap" type="com.behere.portal.domain.LawAppExaminPapersInfo">
+        <result column="PAPER_ID" jdbcType="VARCHAR" property="paperId"/>
+        <result column="QUES_ID" jdbcType="VARCHAR" property="quesId"/>
+        <result column="SCQ_TYPE" jdbcType="VARCHAR" property="scqType"/>
+        <result column="PAPER_NAME" jdbcType="VARCHAR" property="paperName"/>
+        <result column="PAPER_TIME" jdbcType="VARCHAR" property="paperTime"/>
+        <result column="PAPER_T_SCORES" jdbcType="INTEGER" property="paperTScores"/>
+        <result column="SCQ_NUM" jdbcType="INTEGER" property="scqNum"/>
+        <result column="SCQ_S_SCORES" jdbcType="INTEGER" property="scqSScores"/>
+        <result column="JQ_NUM" jdbcType="INTEGER" property="jqNum"/>
+        <result column="JQ_S_SCORES" jdbcType="INTEGER" property="jqSScores"/>
+        <result column="AQ_NUM" jdbcType="INTEGER" property="aqNum"/>
+        <result column="AQ_S_SCORES" jdbcType="INTEGER" property="aqSScores"/>
+        <result column="FB_NUM" jdbcType="INTEGER" property="fbNum"/>
+        <result column="FB_S_SCORES" jdbcType="INTEGER" property="fbSScores"/>
+        <result column="ASK_NUM" jdbcType="INTEGER" property="askNum"/>
+        <result column="ASK_SCORES" jdbcType="INTEGER" property="askScores"/>
+        <result column="AUTH_CODE" jdbcType="VARCHAR" property="authCode"/>
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+        
+        <result column="START_TIME" jdbcType="VARCHAR" property="startTime"/>
+        <result column="END_TIME" jdbcType="VARCHAR" property="endTime"/>
+        <result column="IS_RANDOM" jdbcType="VARCHAR" property="isRandom"/>
+        
+        <result column="isAnswered" jdbcType="INTEGER" property="isAnswered"/>
+
+        <collection property="lawAppChoiceQuesInfo" ofType="com.behere.portal.domain.LawAppChoiceQuesInfo">
+            <id column="CHO_ID" jdbcType="VARCHAR" property="choId"/>
+            <result column="QUES_ID" jdbcType="VARCHAR" property="quesId"/>
+            <result column="CHO_NAME" jdbcType="VARCHAR" property="choName"/>
+            <result column="CHO_OPA" jdbcType="VARCHAR" property="choOpa"/>
+            <result column="CHO_OPB" jdbcType="VARCHAR" property="choOpb"/>
+            <result column="CHO_OPC" jdbcType="VARCHAR" property="choOpc"/>
+            <result column="CHO_OPD" jdbcType="VARCHAR" property="choOpd"/>
+            <result column="CHO_OPE" jdbcType="VARCHAR" property="choOpe"/>
+            <result column="CHO_OPF" jdbcType="VARCHAR" property="choOpf"/>
+            <result column="CHO_TYPE" jdbcType="VARCHAR" property="choType"/>
+            <result column="CHO_ANSW" jdbcType="VARCHAR" property="choAnsw"/>
+            <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser"/>
+            <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+            <result column="MODIFY_USER" jdbcType="VARCHAR" property="modifyUser"/>
+            <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime"/>
+            <result column="QUES_TYPE" jdbcType="VARCHAR" property="quesType"/>
+        </collection>
+
+        <collection property="lawAppEssayQuesInfo" ofType="com.behere.portal.domain.LawAppEssayQuesInfo">
+            <result column="ESSAY_ID" jdbcType="VARCHAR" property="essayId"/>
+            <result column="QUES_ID" jdbcType="VARCHAR" property="quesId"/>
+            <result column="ESSAY_NAME" jdbcType="VARCHAR" property="essayName"/>
+            <result column="ESSAY_ANSW" jdbcType="VARCHAR" property="essayAnsw"/>
+            <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+            <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+            <result column="QUES_TYPE" jdbcType="VARCHAR" property="quesType"/>
+        </collection>
+
+        <collection property="lawAppFillQuesInfo" ofType="com.behere.portal.domain.LawAppFillQuesInfo">
+            <result column="FILL_ID" jdbcType="VARCHAR" property="fillId"/>
+            <result column="QUES_ID" jdbcType="VARCHAR" property="quesId"/>
+            <result column="FILL_NAME" jdbcType="VARCHAR" property="fillName"/>
+            <result column="FILL_ANSW" jdbcType="VARCHAR" property="fillAnsw"/>
+            <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+            <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+            <result column="QUES_TYPE" jdbcType="VARCHAR" property="quesType"/>
+        </collection>
+
+        <collection property="lawAppJudgeQuesInfo" ofType="com.behere.portal.domain.LawAppJudgeQuesInfo">
+            <result column="JUDGE_ID" jdbcType="VARCHAR" property="judgeId"/>
+            <result column="QUES_ID" jdbcType="VARCHAR" property="quesId"/>
+            <result column="JUDGE_NAME" jdbcType="VARCHAR" property="judgeName"/>
+            <result column="JUDGE_ANSW" jdbcType="VARCHAR" property="judgeAnsw"/>
+            <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+            <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+            <result column="QUES_TYPE" jdbcType="VARCHAR" property="quesType"/>
+        </collection>
+
+        <collection property="lawAppPapersQuesrelInfo" ofType="com.behere.portal.domain.LawAppPapersQuesrelInfo">
+            <result column="PAPER_ID" jdbcType="VARCHAR" property="paperId"/>
+            <result column="QUES_ID" jdbcType="VARCHAR" property="quesId"/>
+            <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+            <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+            <result column="QUES_TYPE" jdbcType="VARCHAR" property="quesType"/>
+            
+        </collection>
+
+    </resultMap>
+    <sql id="Base_Column_List" >
+	    PAPER_ID, SCQ_TYPE, PAPER_NAME, START_TIME, END_TIME, PAPER_TIME, PAPER_T_SCORES, 
+	    SCQ_NUM, SCQ_S_SCORES, JQ_NUM, JQ_S_SCORES, AQ_NUM, AQ_S_SCORES, FB_NUM, FB_S_SCORES, 
+	    ASK_NUM, ASK_SCORES, AUTH_CODE,IS_RANDOM,CREATED_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME
+	 </sql>
+	  
+    <!--查询试卷信息-->
+   <select id="selectPapersInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+     <include refid="Base_Column_List"></include>
+     <if test="userId != null and userId != '' ">
+     	,(
+		SELECT count(b.USER_ID) FROM lawapp_papers_examiness_info b 
+		WHERE
+		b.PAPER_ID = a.PAPER_ID AND
+			b.SCQ_TYPE = '${scqType}' AND b.USER_ID ='${userId}' 
+		) AS  isAnswered
+     </if>
+    from
+    lawapp_examin_papers_info a
+    where
+    SCQ_TYPE = '${scqType}'
+    <if test="paperId != null and paperId != '' ">
+    AND PAPER_ID = #{paperId}
+    </if>
+    ORDER BY  CREATED_TIME desc
+  </select>
+
+    <!--获取试卷信息-->
+    <select id="getPapersInfo" parameterType="com.behere.portal.domain.LawAppExaminPapersInfo" resultMap="BaseResultMap">
+	    select
+	   <include refid="Base_Column_List"></include>
+    from
+    lawapp_examin_papers_info 
+    where
+    	1=1
+    <if test = "paperId != null and paperId !='' ">
+		    and  PAPER_ID = #{paperId}
+	    </if>
+	    <if test = "paperName != null and paperName !='' ">
+		    and  PAPER_NAME = #{paperName}
+	    </if>
+  </select>
+
+    <!--根据试卷信息随机获取单选题-->
+   <select id="selectScq" resultMap="BaseResultMap">
+    select
+    choice.CHO_ID ,choice.CHO_NAME,choice.CHO_OPA ,choice.CHO_OPB ,choice.CHO_OPC ,
+    choice.CHO_OPD ,choice.CHO_OPE ,choice.CHO_OPF,choice.QUES_TYPE,choice.CHO_ANSW,choice.CHO_EXAM,choice.CHO_ANALYSIS
+	from
+    lawapp_choice_ques_info as choice
+    where  choice.QUES_TYPE='0'
+    ORDER BY  RAND() LIMIT  #{ScqNum,jdbcType=INTEGER}
+  </select>
+  
+    <!--根据试卷信息随机获取多选题-->
+  <select id="selectAqNum" resultMap="BaseResultMap">
+    select
+    choice.CHO_ID ,choice.CHO_NAME,choice.CHO_OPA ,choice.CHO_OPB ,choice.CHO_OPC ,
+    choice.CHO_OPD ,choice.CHO_OPE ,choice.CHO_OPF,choice.QUES_TYPE,choice.CHO_ANSW,choice.CHO_EXAM,choice.CHO_ANALYSIS
+	from
+    lawapp_choice_ques_info as choice
+    where  choice.QUES_TYPE='1'
+    ORDER BY  RAND() LIMIT #{aqNum,jdbcType=INTEGER}
+  </select>
+  
+    <!--根据试卷信息随机获取判断题-->
+  <select id="selectQuesByRand" resultType="java.util.Map" parameterType="java.lang.Integer">
+    SELECT * from v_ques_all 
+    ORDER BY  RAND() LIMIT #{num,jdbcType=INTEGER}
+  </select>
+
+
+    <insert id="insert" parameterType="com.behere.portal.domain.LawAppExaminPapersInfo">
+    insert into lawapp_examin_papers_info (PAPER_ID, SCQ_TYPE, PAPER_NAME, 
+      PAPER_TIME, PAPER_T_SCORES, SCQ_NUM, 
+      SCQ_S_SCORES, JQ_NUM, JQ_S_SCORES, 
+      AQ_NUM, AQ_S_SCORES, FB_NUM, 
+      FB_S_SCORES,
+       <if test="authCode != null">
+	      AUTH_CODE, 
+	    </if>
+	  IS_RANDOM,
+      CREATED_BY, CREATED_TIME, 
+      UPDATED_BY, UPDATED_TIME,
+       START_TIME,END_TIME
+      )
+    values (#{paperId,jdbcType=VARCHAR}, #{scqType,jdbcType=VARCHAR}, #{paperName,jdbcType=VARCHAR}, 
+      #{paperTime,jdbcType=TIMESTAMP}, #{paperTScores,jdbcType=INTEGER}, #{scqNum,jdbcType=INTEGER}, 
+      #{scqSScores,jdbcType=INTEGER}, #{jqNum,jdbcType=INTEGER}, #{jqSScores,jdbcType=INTEGER}, 
+      #{aqNum,jdbcType=INTEGER}, #{aqSScores,jdbcType=INTEGER}, #{fbNum,jdbcType=INTEGER}, 
+      #{fbSScores,jdbcType=INTEGER},
+      <if test="authCode != null">
+	      #{authCode,jdbcType=VARCHAR},
+	  </if>
+	  #{isRandom,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updatedTime,jdbcType=TIMESTAMP},
+      #{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR}
+      )
+  </insert>
+
+
+    <insert id="savePapersQues" parameterType="java.util.Map">
+        insert into lawapp_papers_quesrel_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        	<if test="id != null">
+                ID,
+            </if>
+            <if test="paperId != null">
+                PAPER_ID,
+            </if>
+            <if test="quesId != null">
+                QUES_ID,
+            </if>
+            <if test="quesType != null">
+                QUES_TYPE,
+            </if>
+            <if test="createUser != null">
+                CREATED_BY,
+            </if>
+            <if test="createTime != null">
+                CREATED_TIME,
+            </if>
+            <if test="modifyUser != null">
+                UPDATED_BY,
+            </if>
+            <if test="modifyTime != null">
+                UPDATED_TIME,
+            </if>
+            <if test="userId != null and userId !=''">
+                USER_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="paperId != null">
+                #{paperId,jdbcType=VARCHAR},
+            </if>
+            <if test="quesId != null">
+                #{quesId,jdbcType=VARCHAR},
+            </if>
+            <if test="quesType != null">
+                #{quesType,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyUser != null">
+                #{modifyUser,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null and userId != ''">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="com.behere.portal.domain.LawAppExaminPapersInfo">
+        insert into lawapp_examin_papers_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="paperId != null">
+                PAPER_ID,
+            </if>
+            <if test="scqType != null">
+                SCQ_TYPE,
+            </if>
+            <if test="paperName != null">
+                PAPER_NAME,
+            </if>
+            <if test="paperTime != null">
+                PAPER_TIME,
+            </if>
+            <if test="paperTScores != null">
+                PAPER_T_SCORES,
+            </if>
+            <if test="scqNum != null">
+                SCQ_NUM,
+            </if>
+            <if test="scqSScores != null">
+                SCQ_S_SCORES,
+            </if>
+            <if test="jqNum != null">
+                JQ_NUM,
+            </if>
+            <if test="jqSScores != null">
+                JQ_S_SCORES,
+            </if>
+            <if test="aqNum != null">
+                AQ_NUM,
+            </if>
+            <if test="aqSScores != null">
+                AQ_S_SCORES,
+            </if>
+            <if test="fbNum != null">
+                FB_NUM,
+            </if>
+            <if test="fbSScores != null">
+                FB_S_SCORES,
+            </if>
+            <if test="createdBy != null">
+                CREATED_BY,
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME,
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY,
+            </if>
+            <if test="updatedTime != null">
+                UPDATED_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="paperId != null">
+                #{paperId,jdbcType=VARCHAR},
+            </if>
+            <if test="scqType != null">
+                #{scqType,jdbcType=VARCHAR},
+            </if>
+            <if test="paperName != null">
+                #{paperName,jdbcType=VARCHAR},
+            </if>
+            <if test="paperTime != null">
+                #{paperTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="paperTScores != null">
+                #{paperTScores,jdbcType=INTEGER},
+            </if>
+            <if test="scqNum != null">
+                #{scqNum,jdbcType=INTEGER},
+            </if>
+            <if test="scqSScores != null">
+                #{scqSScores,jdbcType=INTEGER},
+            </if>
+            <if test="jqNum != null">
+                #{jqNum,jdbcType=INTEGER},
+            </if>
+            <if test="jqSScores != null">
+                #{jqSScores,jdbcType=INTEGER},
+            </if>
+            <if test="aqNum != null">
+                #{aqNum,jdbcType=INTEGER},
+            </if>
+            <if test="aqSScores != null">
+                #{aqSScores,jdbcType=INTEGER},
+            </if>
+            <if test="fbNum != null">
+                #{fbNum,jdbcType=INTEGER},
+            </if>
+            <if test="fbSScores != null">
+                #{fbSScores,jdbcType=INTEGER},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null">
+                #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    
+      
+   <select id="pagesByExaminPapersInfo" parameterType="com.behere.portal.domain.LawAppExaminPapersInfo" resultType="java.util.Map">
+	    select *
+	    from  lawapp_examin_papers_info
+	    where  1=1
+	    <if test = "paperId != null and paperId !='' ">
+		    and  PAPER_ID = #{paperId}
+	    </if>
+	    <if test = "paperName != null and paperName !='' ">
+		    and  PAPER_NAME like '%${paperName}%'
+	    </if>
+  </select>
+  
+    <delete id="delExamPapersInfo" parameterType="java.lang.String" >
+	    delete from lawapp_examin_papers_info
+	    where PAPER_ID = #{paperId,jdbcType=VARCHAR}
+	 </delete>
+	 
+	 <update id="updateByPrimaryKey" parameterType="com.behere.portal.domain.LawAppExaminPapersInfo" >
+	    update lawapp_examin_papers_info
+	    <set>
+	      <if test="scqType != null" >
+	        SCQ_TYPE = #{scqType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="paperName != null" >
+	        PAPER_NAME = #{paperName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="startTime != null" >
+	        START_TIME = #{startTime,jdbcType=VARCHAR},
+	      </if>
+	      <if test="endTime != null" >
+	        END_TIME = #{endTime,jdbcType=VARCHAR},
+	      </if>
+	      <if test="paperTime != null" >
+	        PAPER_TIME = #{paperTime,jdbcType=VARCHAR},
+	      </if>
+	      <if test="paperTScores != null" >
+	        PAPER_T_SCORES = #{paperTScores,jdbcType=INTEGER},
+	      </if>
+	      <if test="scqNum != null" >
+	        SCQ_NUM = #{scqNum,jdbcType=INTEGER},
+	      </if>
+	      <if test="scqSScores != null" >
+	        SCQ_S_SCORES = #{scqSScores,jdbcType=INTEGER},
+	      </if>
+	      <if test="jqNum != null" >
+	        JQ_NUM = #{jqNum,jdbcType=INTEGER},
+	      </if>
+	      <if test="jqSScores != null" >
+	        JQ_S_SCORES = #{jqSScores,jdbcType=INTEGER},
+	      </if>
+	      <if test="aqNum != null" >
+	        AQ_NUM = #{aqNum,jdbcType=INTEGER},
+	      </if>
+	      <if test="aqSScores != null" >
+	        AQ_S_SCORES = #{aqSScores,jdbcType=INTEGER},
+	      </if>
+	      <if test="fbNum != null" >
+	        FB_NUM = #{fbNum,jdbcType=INTEGER},
+	      </if>
+	      <if test="fbSScores != null" >
+	        FB_S_SCORES = #{fbSScores,jdbcType=INTEGER},
+	      </if>
+	      <if test="askNum != null" >
+	        ASK_NUM = #{askNum,jdbcType=INTEGER},
+	      </if>
+	      <if test="askScores != null" >
+	        ASK_SCORES = #{askScores,jdbcType=INTEGER},
+	      </if>
+	      <if test="authCode != null and authCode != ''" >
+	        AUTH_CODE = #{authCode,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createdBy != null" >
+	        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createdTime != null" >
+	        CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updatedBy != null" >
+	        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+	      </if>
+	      <if test="updatedTime != null" >
+	        UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+	      </if>
+	    </set>
+	    where PAPER_ID = #{paperId,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="listByExaminPapersInfo" parameterType="com.behere.portal.domain.LawAppExaminPapersInfo" resultType="java.util.Map">
+	    select *
+	    from  lawapp_examin_papers_info
+	    where  1=1
+	    <if test = "paperId != null and paperId !='' ">
+		    and  PAPER_ID = #{paperId}
+	    </if>
+	    <if test = "paperName != null and paperName !='' ">
+		    and  PAPER_NAME like '%${paperName}%'
+	    </if>
+	    
+	    order by  CREATED_TIME desc
+  </select>
+  
+  
+    <select id="qryAllByPaperId" resultType="java.util.Map" parameterType="java.util.Map">
+          SELECT 
+          p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.*
+           FROM 
+			lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='0' AND p.PAPER_ID='${paperId}'
+		 
+		UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='1' AND p.PAPER_ID='${paperId}'
+		 
+		 UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='2' AND p.PAPER_ID='${paperId}'
+		 
+		 UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='3' AND p.PAPER_ID='${paperId}'
+		 
+		 UNION
+		SELECT p.ID AS qid,p.PAPER_ID,p.QUES_ID,p.QUES_TYPE, a.* FROM 
+		lawapp_papers_quesrel_info p
+		LEFT JOIN  v_ques_all a ON p.QUES_ID = a.id 
+		 WHERE p.QUES_TYPE ='4' AND p.PAPER_ID='${paperId}'
+	
+    </select>
+    
+    
+      <delete id="delPapersQuesrelByid" parameterType="java.lang.String" >
+	    delete from lawapp_papers_quesrel_info
+	    where id = #{id,jdbcType=VARCHAR}
+	 </delete>
+	 
+	 
+	 <select id="qryRoundQuesAll" resultType="java.util.Map" parameterType="java.util.Map">
+    	SELECT * FROM v_ques_all a WHERE  1=1
+		<if test="type != null and type != ''">
+           and type ='${type}'
+        </if>
+		ORDER BY  RAND() 
+		<if test="num != null">
+          LIMIT  ${num}
+        </if>
+    </select>
+  
+    
+</mapper>

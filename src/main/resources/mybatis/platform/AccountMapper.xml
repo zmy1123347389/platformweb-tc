@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.AccountDao">
+	<select id="queryWithdrawalCash" resultType="com.behere.platform.domain.WithdrawalCash">
+		SELECT
+			w.*, u.nick_name
+		FROM
+			t_withdrawal w
+		LEFT JOIN t_user u ON w.user_id = u.id
+		<where>
+			<if test="userId != null and userId != ''">
+				w.user_id = #{userId}
+			</if>
+		</where>
+		ORDER BY
+			create_time DESC
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Integer">
+		SELECT count(*) FROM t_withdrawal w
+		<where>
+			<if test="userId != null and userId != ''">
+				user_id = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateWithdrawalStatus">
+		UPDATE
+			t_withdrawal
+		SET
+			status = #{type}
+		WHERE
+			id = #{id}
+	</update>
+
+	<select id="queryUserByIdForUpdate" resultType="com.behere.platform.domain.User">
+		SELECT * FROM t_user WHERE id = #{userId} FOR UPDATE
+	</select>
+	
+	<update id="addFlower">
+		UPDATE
+			t_user
+		SET
+			flower = flower + #{flower}
+		WHERE
+			id = #{userId}
+	</update>
+
+	<select id="queryRechargeRecordById" resultType="com.behere.platform.domain.WithdrawalCash">
+		SELECT * FROM t_recharge_record WHERE id = #{id}
+	</select>
+    
+    <select id="queryWithdrawalById" resultType="com.behere.platform.domain.WithdrawalCash">
+        SELECT * FROM t_withdrawal WHERE id = #{id}
+    </select>
+
+    <select id="countRecharges" resultType="int">
+        SELECT count(*) FROM t_recharge_record r WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND r.user_id = #{userId}
+        </if>
+        <if test="payType != null and payType != ''">
+            AND r.pay_type = #{payType}
+        </if>
+        <if test="status != null and status != ''">
+            AND r.status = #{status}
+        </if>
+    </select>
+
+	<select id="queryRechargeList" resultType="com.behere.platform.domain.RechargeDO">
+		SELECT
+            r.order_id,
+            r.user_id,
+            u.nick_name,
+            r.price as amount,
+            u.balance,
+            r.pay_type,
+            r.create_time,
+            r.`status`
+        FROM
+            t_recharge_record r
+        LEFT JOIN t_user u ON r.user_id = u.id
+        WHERE
+            1=1
+            <if test="userId != null and userId != ''">
+                AND r.user_id = #{userId}
+            </if>
+            <if test="payType != null and payType != ''">
+                AND r.pay_type = #{payType}
+            </if>
+            <if test="status != null and status != ''">
+                AND r.status = #{status}
+            </if>
+        ORDER BY
+            r.create_time DESC
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+	</select>
+
+    <select id="queryAuthAccount" resultType="com.behere.platform.domain.AuthAccount">
+        SELECT
+            u.id as userId,
+            u.nick_name,
+            sum(b.flower) / 2 AS flower
+        FROM
+            t_account_book b
+        LEFT JOIN t_user u ON b.to_user = u.id
+        WHERE
+          1=1
+            <if test="userId != null and userId != ''">
+              AND u.id = #{userId}
+            </if>
+            <if test="invitationCode != null and invitationCode != ''">
+                AND u.invitation_code = #{invitationCode}
+            </if>
+        <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+            AND DATE_FORMAT(b.create_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+        </if>
+        GROUP BY
+            u.id LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="countAuthAccount" resultType="java.lang.Integer">
+        SELECT count(*) FROM (
+            SELECT
+            u.id
+            FROM
+            t_account_book b
+            LEFT JOIN t_user u ON b.to_user = u.id
+            WHERE 1 = 1
+            <if test="userId != null and userId != ''">
+              AND u.id = #{userId}
+            </if>
+            <if test="invitationCode != null and invitationCode != ''">
+                AND u.invitation_code = #{invitationCode}
+            </if>
+            <if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+              AND DATE_FORMAT(b.create_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+            </if>
+            GROUP BY
+            u.id
+        ) as t
+    </select>
+</mapper>

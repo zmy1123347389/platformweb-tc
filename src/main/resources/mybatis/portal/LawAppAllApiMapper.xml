@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.behere.portal.dao.LawAppAllApiDao" >
+ 
+   <select id="qryAudioPages" resultType="java.util.Map" parameterType="java.util.Map" >
+	    select 
+	      id  AS id,
+	      audio_name  AS audioName,
+	      audio_img  AS audioImg,
+	      audio_img_url  AS audioImgUrl,
+	      audio_url  AS audioUrl,
+	      audio_url_name  AS audioUrlName,
+	      create_user  AS createUser,
+	      create_time  AS createTime,
+	      modify_user  AS modifyUser,
+	      modify_time  AS modifyTime
+	    from lawapp_audio_info
+	    where 1 = 1  
+	   	<if test="audioName != null and audioName !='' " >
+	       and	audio_name like '%${audioName}%'
+	    </if>
+	    order by create_time desc
+  </select>
+  
+   
+   <select id="qryNoticePages" resultType="java.util.Map" parameterType="java.util.Map" >
+	    select 
+	      id  AS id,
+	      notice_name  AS noticeName,
+	      img_name  AS imgName,
+	      img_url  AS imgUrl,
+	      notice_content AS noticeContent,
+	      create_user  AS createUser,
+	      create_time  AS createTime,
+	      modify_user  AS modifyUser,
+	      modify_time  AS modifyTime
+	    from lawapp_proclamation_info
+	    where 1 = 1  
+	   	 <if test="noticeName != null and noticeName !=''" >
+	       and notice_name like '%${noticeName}%'
+	     </if>
+	     <if test="noticeType != null and noticeType !=''" >
+	       and notice_type = '${noticeType}'
+	     </if>
+	     <if test="id != null and id !=''" >
+	       and id = '${id}'
+	     </if>
+	    order by create_time desc
+  </select>
+  
+  <select id="qryImggeTextPages" resultType="java.util.Map" parameterType="java.util.Map" >
+    select 
+    id
+    , l_name AS lName
+    , l_type AS lType
+    , l_bz AS lBz
+    , create_user AS createUser
+    , create_time AS createTime
+    , modify_user AS modifyUser
+    , modify_time AS modifyTime
+    
+    from lawapp_jd_zd_rw_info
+    where 1=1
+    <if test="lType != null" >
+        and l_type = '${lType}'
+     </if>
+     <if test="lName != null" >
+        and l_name = '${lName}'
+     </if>
+     <if test="id != null" >
+        and id = '${id}'
+     </if>
+     order by create_time desc
+  </select>
+  
+  
+    <select id="qryImggeTextById" resultType="java.util.Map" parameterType="java.util.Map" >
+	    select 
+	    id
+	    , l_name AS lName
+	    , l_type AS lType
+	    , l_bz AS lBz
+	    ,l_context AS lContext
+	    , create_user AS createUser
+	    , create_time AS createTime
+	    , modify_user AS modifyUser
+	    , modify_time AS modifyTime
+	    
+	    from lawapp_jd_zd_rw_info
+	    where 1=1
+	    <if test="lType != null" >
+	        and l_type = '${lType}'
+	     </if>
+	     <if test="lName != null" >
+	        and l_name = '${lName}'
+	     </if>
+	     <if test="id != null" >
+	        and id = '${id}'
+	     </if>
+	     order by create_time desc
+  </select>
+  
+  <insert id="saveExamPass" parameterType="java.util.Map" >
+    insert into lawapp_cg_dt_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="scqType != null" >
+        SCQ_TYPE,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="examTime != null" >
+        exam_time,
+      </if>
+      <if test="cgBz != null" >
+        cg_bz,
+      </if>
+      <if test="cgBz1 != null" >
+        cg_bz1,
+      </if>
+      <if test="cgBz2 != null" >
+        cg_bz2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="scqType != null" >
+        #{scqType,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="examTime != null" >
+        #{examTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgBz != null" >
+        #{cgBz,jdbcType=VARCHAR},
+      </if>
+      <if test="cgBz1 != null" >
+        #{cgBz1,jdbcType=VARCHAR},
+      </if>
+      <if test="cgBz2 != null" >
+        #{cgBz2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select  id="qryCgdtCount" resultType="java.util.Map" parameterType="java.util.Map">
+  	SELECT IFNULL(MAX(`level`),0) AS maxScore,COUNT(id) AS cgCount FROM  lawapp_cg_dt_info
+  	where 1=1
+  	<if test="userId != null and userId !='' ">
+  		and user_id = '${userId}'
+  	</if>
+  </select>
+  
+  <select  id="qryCheckPass" resultType="java.util.Map" parameterType="java.util.Map">
+	  	SELECT 
+			id, user_id, SCQ_TYPE, level, exam_time, cg_bz, cg_bz1, cg_bz2
+	  	 FROM  lawapp_cg_dt_info
+	  	where 1=1
+	  	<if test="userId != null and userId !='' ">
+	  		and user_id = '${userId}'
+	  	</if>
+	  	<if test="startTime != null  ">
+	  		and exam_time &gt;= ${startTime} 
+	  	</if>
+	  	<if test="endTime != null ">
+	  		and exam_time &lt;= ${endTime} 
+	  	</if>
+  </select>
+  
+  
+  <select  id="qryLawappKjPages" resultType="java.util.Map" parameterType="java.util.Map">
+	  	select 
+	     id, kj_name, kj_url, img_url,  create_user, create_time
+	    from lawapp_jp_kj_info
+	    where 1=1
+	    <if test="kjName != null" >
+	        AND kj_name like '%${kjName}%'
+	    </if>
+	    <if test="id != null" >
+	        AND id  = '${id}'
+	    </if>
+	     ORDER BY create_time desc
+  </select>
+  
+  <select id="selectByPid" resultType="java.util.Map" parameterType="java.util.Map" >
+    select 
+    id, kid, img_url as imgUrl, img_no as imgNo
+    from lawapp_jp_kj_img_info
+    where 1=1
+      <if test="kid != null and kid !='' " >
+	   	and  kid = '${kid}'
+      </if>
+      <if test="id != null and id !='' " >
+	   	and  id = '${id}'
+      </if>
+      ORDER BY   img_no 
+  </select>
+  
+  
+   <select id="qryNewLawPages" resultType="java.util.Map" parameterType="java.util.Map" >
+	    select 
+	     id, law_name lawName,  law_type lawType, create_user createUser, create_time createTime
+	    from  lawapp_new_law_info
+	    where 1=1 
+	    <if test="lawName != null" >
+	        and law_name like '%${lawName}%'
+	     </if>
+	     <if test="lawType != null" >
+	       and  law_type = '${lawType}'
+	     </if>
+	     ORDER BY create_time desc
+  </select>
+  
+  <select id="qryNewLawById" resultType="java.util.Map" parameterType="java.util.Map" >
+	    select 
+	     id, law_name lawName,law_texts lawTexts,  law_type lawType, create_user createUser, create_time createTime
+	    from  lawapp_new_law_info
+	    where 1=1 
+	    <if test="lawName != null and lawName != ''" >
+	        and law_name like '%${lawName}%'
+	     </if>
+	     <if test="lawType != null and lawType != '' " >
+	       and  law_type = '${lawType}'
+	     </if>
+	      <if test="id != null and id != '' " >
+	       and  id = '${id}'
+	     </if>
+	     ORDER BY create_time desc
+  </select>
+  
+  
+  
+  
+  
+</mapper>

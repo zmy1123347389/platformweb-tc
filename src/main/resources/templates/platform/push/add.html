@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+                <div class="ibox-content">
+					<form class="form-horizontal m-t" id="signupForm" enctype="multipart/form-data">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">标题：</label>
+							<div class="col-sm-3">
+								<input id="title" name="title" class="form-control" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">推送类型：</label>
+							<div class="col-sm-8">
+								<select id="type" name="type">
+									<option value="0">广播推送</option>
+									<option value="1">指定推送</option>
+								</select>
+							</div>
+						</div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推送内容：</label>
+                            <div class="col-sm-8">
+                                <textarea id="content" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推送时间：</label>
+                            <div class="col-sm-8">
+								<input type="radio" id="timing" name="timing" value="0" checked>立即推送
+                            </div>
+                        </div>
+						<div class="form-group">
+							<div class="col-sm-8 col-sm-offset-3">
+								<button type="submit" class="btn btn-primary" onclick="saveOrUpdate(1)">提交</button>
+							</div>
+						</div>
+					</form>
+                    <table id="exampleTable_user" data-mobile-responsive="true">
+                    </table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:include="include::footer"></div>
+<script src="/js/appjs/platform/push/push.js"></script>
+</body>
+</html>

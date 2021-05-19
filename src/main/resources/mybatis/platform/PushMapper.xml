@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.PushDao">
+	
+	<select id="queryPushInformations" resultType="com.behere.platform.domain.PushDO">
+		SELECT
+            p.id,
+            p.title,
+            p.content,
+            p.type,
+            p.timing,
+            p.create_time,
+            u.username AS operator,
+			group_concat(lu.nick_name Separator ',') AS push_users,
+			p.cron,
+			p.rule_describe
+        FROM
+            t_push_information p
+        LEFT JOIN sys_user u ON p.operator = u.user_id
+		LEFT JOIN t_push_user pu ON pu.push_id = p.id
+		LEFT JOIN t_user lu ON pu.user_id = lu.id
+        WHERE timing = #{timing} AND p.deleted = 0
+		GROUP BY p.id
+        ORDER BY p.create_time DESC LIMIT #{offset}, #{limit}
+	</select>
+    
+    <insert id="savePushInformation" useGeneratedKeys="true" keyProperty="id" parameterType="com.behere.platform.domain.PushDO">
+        INSERT INTO t_push_information (
+            title,
+            content,
+            type,
+            timing,
+            operator,
+            cron,
+            rule_describe
+        ) VALUES (
+            #{title},
+            #{content},
+            #{type},
+            #{timing},
+            #{operatorId},
+            #{cron},
+            #{ruleDescribe}
+        )
+    </insert>
+
+    <select id="count" resultType="int">
+        SELECT count(*) FROM t_push_information WHERE timing = #{timing}
+    </select>
+
+    <select id="savePushUser">
+        INSERT INTO t_push_user (
+            push_id,
+            user_id
+        ) VALUES
+            <foreach collection="list" item="item" index="index" separator=",">
+                (#{pushId}, #{item})
+            </foreach>
+    </select>
+
+    <select id="queryPushInformationById" resultType="com.behere.platform.domain.PushDO">
+        SELECT * FROM t_push_information WHERE id = #{id}
+    </select>
+
+    <select id="queryPushUserByPushInformationId" resultType="java.lang.Long">
+        SELECT user_id FROM t_push_user WHERE push_id = #{pushId}
+    </select>
+</mapper>

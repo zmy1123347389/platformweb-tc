@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.behere.portal.dao.LawAppExaminessNumInfoDao">
+    <resultMap id="BaseResultMap" type="com.behere.portal.domain.LawAppExaminessNumInfo">
+        <result column="EXAMS_ID" jdbcType="VARCHAR" property="examsId"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="examinNum" jdbcType="INTEGER" property="examinNum"/>
+    </resultMap>
+    <!--   用户考试答题次数-->
+    <select id="getExaminNum" resultMap="BaseResultMap">
+    select
+    COUNT(EXAMS_ID) as examinNum
+    from  lawapp_papers_examiness_info
+    where USER_ID=#{userId,jdbcType=VARCHAR}
+  </select>
+</mapper>

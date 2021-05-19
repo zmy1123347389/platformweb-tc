@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include::header">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="ibox float-e-margins">
+                <div class="ibox-content">
+					<form class="form-horizontal m-t" id="signupForm" enctype="multipart/form-data">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">标题：</label>
+							<div class="col-sm-3">
+								<input id="title" name="title" class="form-control" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">推送类型：</label>
+							<div class="col-sm-8">
+								<select id="type" name="type">
+									<option value="0">广播推送</option>
+									<option value="1">指定推送</option>
+								</select>
+							</div>
+						</div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推送内容：</label>
+                            <div class="col-sm-8">
+                                <textarea id="content" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推送时间：</label>
+                            <div class="col-sm-8">
+                                <input type="radio" id="timing" name="timing" value="1" checked>定时推送
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">推送规则：</label>
+                            <div class="col-sm-8">
+								<select id="rule" name="rule">
+                                    <option value="-1">请选择</option>
+                                    <option value="0">一次</option>
+                                    <option value="1">每年</option>
+                                    <option value="2">每月</option>
+                                    <option value="3">每日</option>
+                                </select>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <label class="col-sm-3 control-label"></label>
+							<div class="col-sm-8" name="timingRule" style="display: none">
+                                <input type="text" class="layui-input" id="onceTime" name="timingRule">
+                            </div>
+                            <div class="col-sm-8" name="timingRule" style="display: none">
+                                <input type="text" class="layui-input" id="yearTime" name="timingRule">
+                            </div>
+                            <div class="col-sm-8" name="timingRule" style="display: none">
+                                <input type="text" class="layui-input" id="monthTime" name="timingRule">
+                            </div>
+                            <div class="col-sm-8" name="timingRule" style="display: none">
+                                <input type="text" class="layui-input" id="dayTime" name="timingRule">
+                            </div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-8 col-sm-offset-3">
+								<button type="submit" class="btn btn-primary" onclick="saveOrUpdate(1)">提交</button>
+							</div>
+						</div>
+					</form>
+                    <table id="exampleTable_user" data-mobile-responsive="true">
+                    </table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:include="include::footer"></div>
+<script src="/js/appjs/platform/push/push.js"></script>
+<script src="/js/lay/modules/laydate/laydate.js"></script>
+<script>
+
+
+    function save() {
+        var form = document.getElementById('signupForm');
+        var rows = $('#exampleTable_user').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组
+        var ids = new Array();
+        // 遍历所有选择的行数据，取每条数据对应的ID
+        $.each(rows, function(i, row) {
+            ids[i] = row['id'];
+        });
+        var url = "/platform/push/save";
+        formData = new FormData(form);
+        formData.append("ids", ids);
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: url,
+            data: formData, // 你的formid
+            async: false,
+            processData: false,
+            contentType: false,
+            error: function (request) {
+                alert("Connection error");
+            },
+            success: function (r) {
+                if (r.code == 0) {
+                    parent.layer.msg(r.msg);
+                    parent.reLoad();
+                    var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+                    parent.layer.close(index);
+
+                } else {
+                    parent.layer.msg(r.msg);
+                }
+            }
+        });
+    }
+
+
+    function setDisplay(index) {
+        var timingRule = $("div[name='timingRule']");
+        for (var i = 0; i < timingRule.length; i++) {
+            var element = timingRule[i];
+            if (i == index) {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+    }
+
+    $(document).ready(function() {
+        $("#rule").change(function(){
+            var rule = $("#rule").val();
+            setDisplay(rule);
+        });
+    });
+
+    laydate.render({
+        elem: '#onceTime' //指定元素
+        ,type: 'datetime'
+    });
+
+    laydate.render({
+        elem: '#yearTime'
+        ,format: 'MM-dd HH:mm:ss' //可任意组合
+    });
+
+    laydate.render({
+        elem: '#monthTime'
+        ,format: 'dd HH:mm:ss' //可任意组合
+    });
+
+    laydate.render({
+        elem: '#dayTime'
+        ,type: 'time'
+    });
+</script>
+</body>
+</html>

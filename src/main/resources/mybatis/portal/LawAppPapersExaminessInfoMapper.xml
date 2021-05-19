@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.behere.portal.dao.LawAppPapersExaminessInfoDao">
+    <resultMap id="BaseResultMap" type="com.behere.portal.domain.LawAppPapersExaminessInfo">
+        <result column="EXAMS_ID" jdbcType="VARCHAR" property="examsId"/>
+        <result column="PAPER_ID" jdbcType="VARCHAR" property="paperId"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="PAPER_R_SCORES" jdbcType="INTEGER" property="paperRScores"/>
+        <result column="PAPER_TIMED" jdbcType="VARCHAR" property="paperTimed"/>
+        <result column="SCQ_R_SCORES" jdbcType="INTEGER" property="scqRScores"/>
+        <result column="MCQ_R_SCORES" jdbcType="INTEGER" property="mcqRScores"/>
+        <result column="JQ_R_SCORES" jdbcType="INTEGER" property="jqRScores"/>
+        <result column="AQ_R_SCORES" jdbcType="INTEGER" property="aqRScores"/>
+        <result column="FB_R_SCORES" jdbcType="INTEGER" property="fbRScores"/>
+        <result column="SCQ_TYPE" jdbcType="VARCHAR" property="scqType"/>
+        <result column="STATE" jdbcType="VARCHAR" property="state"/>
+        <result column="INTEGRAL_NUMBER" jdbcType="INTEGER" property="integralNumber"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="rank" jdbcType="VARCHAR" property="rank"/>
+        <collection property="lawAppPoliceInfos" ofType="com.behere.portal.domain.LawAppPoliceInfo" column="id">
+            <id column="PRIMARY_ID" jdbcType="VARCHAR" property="primaryId"/>
+            <result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+            <result column="XP" javaType="String" property="xp"/>
+        </collection>
+    </resultMap>
+    <!-- 添加试卷-->
+    <insert id="saveExamResult" parameterType="com.behere.portal.domain.LawAppPapersExaminessInfo">
+    insert into lawapp_papers_examiness_info (EXAMS_ID, PAPER_ID, USER_ID,
+      PAPER_R_SCORES, PAPER_TIMED, SCQ_R_SCORES, 
+      MCQ_R_SCORES, JQ_R_SCORES,  CREATED_BY, CREATED_TIME,SCQ_TYPE,STATE,INTEGRAL_NUMBER)
+    values (#{examsId,jdbcType=VARCHAR},#{paperId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+      #{paperRScores,jdbcType=INTEGER}, #{paperTimed,jdbcType=VARCHAR}, #{scqRScores,jdbcType=INTEGER},
+      #{mcqRScores,jdbcType=INTEGER}, #{jqRScores,jdbcType=INTEGER}, #{createdBy,jdbcType=VARCHAR},
+      NOW(),#{scqType,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{integralNumber,jdbcType=INTEGER})
+  </insert>
+
+    <!--    考试排名-->
+	<select id="testRanking" resultMap="BaseResultMap">
+	   <!--  SELECT papers.PAPER_R_SCORES ,papers.USER_ID ,police.USER_NAME ,police.XP from
+	   lawapp_papers_examiness_info as papers ,
+	   lawapp_police_info as police
+	    WHERE papers.PAPER_ID=#{paperId} and police.USER_ID= papers.USER_ID
+	    ORDER BY papers.PAPER_R_SCORES DESC limit 20 -->
+	    
+	    SELECT
+			papers.PAPER_R_SCORES,
+			papers.USER_ID,
+			police.USER_NAME,
+			police.XP,
+			(
+				SELECT
+					count(DISTINCT(PAPER_R_SCORES))
+				FROM
+					lawapp_papers_examiness_info AS b
+				WHERE
+					b.PAPER_R_SCORES > papers.PAPER_R_SCORES
+				AND b.PAPER_ID = #{paperId}
+					ORDER BY
+			b.PAPER_R_SCORES DESC
+			) + 1 AS rank
+		FROM
+			lawapp_papers_examiness_info AS papers
+		LEFT JOIN lawapp_police_info AS police ON police.USER_ID = papers.USER_ID
+		WHERE
+			1 = 1
+			<if test = "userId != null and userId !='' ">
+			    and  papers.USER_ID = #{userId}
+		    </if>
+		    <if test = "paperId != null and paperId !='' ">
+			    and  papers.PAPER_ID = #{paperId}
+		    </if>
+		ORDER BY
+			papers.PAPER_R_SCORES DESC
+		LIMIT 20
+	</select>
+
+    <!--查询考试结果-->
+  <select id="getResult" resultMap="BaseResultMap">
+    select
+    	PAPER_ID, USER_ID, INTEGRAL_NUMBER,
+      PAPER_R_SCORES, STATE,SCQ_TYPE
+    from lawapp_papers_examiness_info
+    where  1=1
+    <if test = "examsId != null and examsId !='' ">
+	    and  EXAMS_ID = #{examsId}
+    </if>
+    <if test = "userId != null and userId !='' ">
+	    and  USER_ID = #{userId}
+    </if>
+    <if test = "paperId != null and paperId !='' ">
+	    and  PAPER_ID = #{paperId}
+    </if>
+    
+    <if test = "createdTime != null ">
+	    and  CREATED_TIME &gt; #{createdTime}	AND CREATED_TIME &lt; NOW()
+    </if>
+    
+  </select>
+    <!--判断是否已经答过题-->
+   <select id="getState" resultMap="BaseResultMap">
+	    select
+	    	STATE
+	    from lawapp_papers_examiness_info
+	    where USER_ID=#{userId} and PAPER_ID=#{paperId} and SCQ_TYPE=#{scqType}
+  </select>
+  
+  
+  <insert id="saveUserExamQues" parameterType="java.util.Map">
+  	insert into LAWAPP_USER_EXAM_QUES_INFO 
+  	(ID,PAPER_ID,QUES_ID,USER_ID,QUES_TYPE,SCQ_TYPE,CREATE_TIME,IS_CORRECT) 
+  	values
+  	<foreach collection="exams" item="exam" separator=",">
+      (#{exam.id},#{exam.paperId},#{exam.quesId},#{exam.userId},#{exam.quesType},#{exam.scqType},#{exam.createTime},#{exam.isCorrect})
+    </foreach>
+  </insert>
+  
+   <select id="qryScoresCounte" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT SUM(CASE WHEN PAPER_R_SCORES &gt;= 85 THEN 1 ELSE 0 END) AS value, '优秀' as name
+ 		FROMLAWAPP_POLICE_INFO US
+		LEFT JOINLAWAPP_PAPERS_EXAMINESS_INFO PE ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1) EP ON PE.PAPER_ID = EP.PAPER_ID
+		WHERE EP.PAPER_ID IS NOT NULL
+		UNION
+		SELECT SUM(CASE WHEN PAPER_R_SCORES &lt; 85 THEN (CASE WHEN PAPER_R_SCORES &gt;= 60 THEN 1 ELSE 0 END) ELSE 0 END) AS value, '及格' as name
+ 		FROMLAWAPP_POLICE_INFO US
+		LEFT JOINLAWAPP_PAPERS_EXAMINESS_INFO PE ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1) EP ON PE.PAPER_ID = EP.PAPER_ID
+		WHERE EP.PAPER_ID IS NOT NULL
+		UNION
+		SELECT SUM(CASE WHEN PAPER_R_SCORES &lt; 60 THEN 1 ELSE 0 END) AS value, '不及格' as name
+ 		FROMLAWAPP_POLICE_INFO US
+		LEFT JOINLAWAPP_PAPERS_EXAMINESS_INFO PE ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1) EP ON PE.PAPER_ID = EP.PAPER_ID
+		WHERE EP.PAPER_ID IS NOT NULL
+  </select>
+  
+  <select id="qryProvinceScoresCount" parameterType="java.util.Map" resultType="java.util.Map">
+	    select p.USER_ID as userId,p.USER_NAME as userName,p.POLICE_GENDER as policeGender,allunitid.unit_name as unitName, pe.PAPER_R_SCORES as paperRScores from (
+			SELECT level, DATA.* FROM(
+			SELECT 
+			@ids as _ids, 
+			( SELECT @ids := GROUP_CONCAT(UNIT_ID) 
+			FROMlawapp_unit_info 
+			WHERE FIND_IN_SET(PARENT_ID, @ids) 
+			) as cids, 
+			@l := @l+1 as level 
+			FROMlawapp_unit_info, 
+			(SELECT @ids :=#{unitId}, @l := 0 ) b 
+			WHERE @ids IS NOT NULL 
+			) UNIT_ID,lawapp_unit_info DATA 
+			WHERE FIND_IN_SET(DATA.UNIT_ID, _ids) 
+			ORDER BY level, UNIT_ID
+			) allunitid
+			LEFT JOINlawapp_police_info p on p.DEPT_ID  = allunitid.unit_id
+			LEFT JOINlawapp_papers_examiness_info pe on p.USER_ID = pe.user_id
+			LEFT JOINlawapp_examin_papers_info ep on ep.PAPER_ID = pe.PAPER_ID
+		where !ISNULL(p.USER_ID) and ep.PAPER_ID = #{paperId}
+  </select>
+  
+   <select id="qryUnitIdByParentId" parameterType="java.util.Map" resultType="java.util.Map">
+	  SELECT UNIT_ID AS unitId,UNIT_NAME AS unitName FROMLAWAPP_UNIT_INFO WHERE PARENT_ID = ${parentId}
+  </select>
+  
+   <select id="qryUnitInfo" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT UNIT_ID AS unitId,UNIT_NAME AS unitName FROMLAWAPP_UNIT_INFO WHERE PARENT_ID = '610000000000' AND UNIT_ID NOT LIKE '%18%' 
+  </select>
+  
+   <select id="qryAllCityPercentageForMoble" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			SUM(CASE WHEN PAPER_R_SCORES &gt;= 85 THEN 1 ELSE 0 END) / COUNT(*) AS excellentValue,
+			SUM(CASE WHEN PAPER_R_SCORES &lt; 85 THEN(CASE WHEN PAPER_R_SCORES &gt;= 60 THEN 1 ELSE 0 END) ELSE 0 END) / COUNT(*) AS passValue,
+			SUM(CASE WHEN PAPER_R_SCORES &lt; 60 THEN 1 ELSE 0 END) / COUNT(*) AS failValue
+		FROM
+			(SELECT P.USER_ID FROM
+				(SELECT UNIT_ID,UNIT_NAME FROMLAWAPP_UNIT_INFO WHERE PARENT_ID = #{parentId}
+				UNION ALL
+				SELECT UNIT_ID,UNIT_NAME FROMLAWAPP_UNIT_INFO WHERE UNIT_ID = #{parentId}
+				) UI 
+				LEFT JOINLAWAPP_POLICE_INFO P ON P.DEPT_ID = UI.UNIT_ID where !ISNULL(P.USER_ID)
+			) US
+		LEFT JOINLAWAPP_PAPERS_EXAMINESS_INFO PE ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1) EP ON PE.PAPER_ID = EP.PAPER_ID
+  </select>
+  
+  <select id="qryAllCityPercentageForCityPC" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT SUM(CASE WHEN PAPER_R_SCORES &gt;= 60 THEN 1 ELSE 0 END) AS passValue,
+		COUNT(*) AS counts
+		 FROM 
+		(SELECT P.USER_ID FROMLAWAPP_POLICE_INFO P
+		LEFT JOINLAWAPP_UNIT_INFO UI ON P.DEPT_ID = UI.UNIT_ID
+		WHERE UI.PARENT_ID = #{parentId}
+		) US 
+		LEFT JOIN LAWAPP_PAPERS_EXAMINESS_INFO PE
+		ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (
+		SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO 
+		WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1
+		) EP ON PE.PAPER_ID = EP.PAPER_ID
+  </select>
+  
+    <select id="qryScoresCounteAll" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT SUM(CASE WHEN PAPER_R_SCORES &gt;= 60 THEN 1 ELSE 0 END) AS value, '通过人数' as name
+ 		FROMLAWAPP_POLICE_INFO US
+		LEFT JOINLAWAPP_PAPERS_EXAMINESS_INFO PE ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1) EP ON PE.PAPER_ID = EP.PAPER_ID
+		WHERE EP.PAPER_ID IS NOT NULL
+		UNION
+		SELECT COUNT(*) AS value ,'总人数' as name
+ 		FROMLAWAPP_POLICE_INFO US
+		LEFT JOINLAWAPP_PAPERS_EXAMINESS_INFO PE ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1) EP ON PE.PAPER_ID = EP.PAPER_ID
+		WHERE EP.PAPER_ID IS NOT NULL
+  </select>
+  
+    <select id="qryAllCityPercentageForPC" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT ROUND(SUM(CASE WHEN PAPER_R_SCORES &gt;= 85 THEN 1 ELSE 0 END)/COUNT(*)*100,2) AS excellentValue,
+		ROUND(SUM(CASE WHEN PAPER_R_SCORES &lt; 85 THEN (CASE WHEN PAPER_R_SCORES &gt; 60 THEN 1 ELSE 0 END) ELSE 0 END)/COUNT(*)*100,2) AS passValue,
+		ROUND(SUM(CASE WHEN PAPER_R_SCORES &lt; 60 THEN 1 ELSE 0 END)/COUNT(*)*100,2) AS failValue,
+		AVG(PAPER_R_SCORES) AS avgSource
+		 FROM 
+		(SELECT P.USER_ID FROMLAWAPP_POLICE_INFO P
+		LEFT JOINLAWAPP_UNIT_INFO UI ON P.DEPT_ID = UI.UNIT_ID
+		WHERE UI.PARENT_ID = #{parentId}
+		) US 
+		LEFT JOIN LAWAPP_PAPERS_EXAMINESS_INFO PE
+		ON US.USER_ID = PE.USER_ID
+		LEFT JOIN (
+		SELECT PAPER_ID FROMLAWAPP_EXAMIN_PAPERS_INFO 
+		WHERE SCQ_TYPE = '6' ORDER BY END_TIME DESC LIMIT 1
+		) EP ON PE.PAPER_ID = EP.PAPER_ID
+  </select>
+  
+  <select id="qryWrongCount" parameterType="java.util.Map" resultType="java.util.Map">
+  	SELECT c.PAPER_NAME AS paperName,CONCAT(Round(a.cnum/(c.SCQ_NUM+c.JQ_NUM+c.AQ_NUM+c.FB_NUM+c.ASK_NUM )*100,3),'%') AS crate,a.cnum,a.PAPER_ID AS paperId,a.QUES_ID AS quesId,b.`name`,b.typename FROM (
+		SELECT
+			QUES_ID,PAPER_ID,COUNT(*) AS cnum 
+		FROM
+			lawapp_user_exam_ques_info 
+		WHERE  IS_CORRECT='0' AND SCQ_TYPE='6'
+		GROUP BY QUES_ID,PAPER_ID
+		) a 
+		LEFT JOINv_ques_all b ON a.QUES_ID = b.id
+		LEFT JOINlawapp_examin_papers_info c ON a.PAPER_ID = c.PAPER_ID
+  </select>
+  
+  
+  <select id="qryExcellentRate" parameterType="java.util.Map" resultType="java.util.Map">
+	  SELECT 
+		b.USER_NAME AS userName, b.USER_ID AS userId, a.*
+		, IF(ynum = 0,0,CONCAT(Round(ynum/(ynum+jnum+bnum)*100,3),'%')) AS yrate
+		FROM(
+		SELECT
+			USER_ID 
+		, SUM(CASE WHEN PAPER_R_SCORES &gt; 84 THEN 1 ELSE 0 END) AS ynum
+		, SUM(CASE WHEN PAPER_R_SCORES &lt; 85 THEN (CASE WHEN PAPER_R_SCORES &gt; 59 THEN 1 ELSE 0 END) ELSE 0 END) AS jnum
+		, SUM(CASE WHEN PAPER_R_SCORES &lt; 60 THEN 1 ELSE 0 END) AS bnum
+		FROM
+			lawapp_papers_examiness_info
+		GROUP BY  USER_ID
+		) a 
+		LEFT JOINlawapp_police_info b ON a.USER_ID = b.USER_ID
+  </select>
+  
+  
+ <select id="qryAllCityCount" parameterType="java.util.Map" resultType="java.util.Map">
+		
+			SELECT 
+				(ynum+jnum+bnum) AS userCount
+				, IF(ynum = 0,0,CONCAT(Round(ynum/(ynum+jnum+bnum)*100,2),'')) AS excellentValue
+			FROM (
+			SELECT 
+			SUM(CASE WHEN PAPER_R_SCORES &gt; 84 THEN 1 ELSE 0 END) AS ynum
+					, SUM(CASE WHEN PAPER_R_SCORES &lt; 85 THEN (CASE WHEN PAPER_R_SCORES &gt; 59 THEN 1 ELSE 0 END) ELSE 0 END) AS jnum
+					, SUM(CASE WHEN PAPER_R_SCORES &lt; 60 THEN 1 ELSE 0 END) AS bnum
+			 FROM 
+				(
+					SELECT
+						P.USER_ID
+					FROM
+						LAWAPP_POLICE_INFO P
+					LEFT JOINLAWAPP_UNIT_INFO UI ON P.DEPT_ID = UI.UNIT_ID
+					WHERE
+						UI.UNIT_ID LIKE '${parentId}'
+				) US
+			LEFT JOIN LAWAPP_PAPERS_EXAMINESS_INFO PE  
+			 ON   US.USER_ID = PE.USER_ID
+			WHERE
+				PE.PAPER_ID = (
+					SELECT
+						PAPER_ID
+					FROM
+						LAWAPP_EXAMIN_PAPERS_INFO
+					WHERE
+						SCQ_TYPE = '6'
+					AND date_format(
+							END_TIME,
+							'%Y-%m-%d %H:%i:%s'
+						) &lt; NOW()
+					ORDER BY
+						END_TIME DESC
+					LIMIT 1
+				)
+			)a
+		
+  </select>
+  
+  
+      <!--    考试排名-->
+	<select id="usersExamPapaerPages" parameterType="java.util.Map" resultType="java.util.Map">
+	    SELECT
+			a.PAPER_ID paperId,b.PAPER_NAME paperName,
+			a.PAPER_R_SCORES grade,
+			a.PAPER_TIMED paperTimed,b.CREATED_TIME createdTime
+		FROM
+			lawapp_papers_examiness_info a
+		LEFT JOIN lawapp_examin_papers_info b ON  a.PAPER_ID = b.PAPER_ID
+		WHERE
+			1 = 1
+			<if test = "userId != null and userId !='' ">
+			    and  a.USER_ID = #{userId}
+		    </if>
+		    <if test = "paperId != null and paperId !='' ">
+			    and  a.PAPER_ID = #{paperId}
+		    </if>
+		
+	</select>
+  
+  
+  
+  
+</mapper>

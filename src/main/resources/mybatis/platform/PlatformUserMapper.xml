@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.PlatformUserDao">
+	<select id="list" resultType="com.behere.platform.domain.User">
+		SELECT * FROM t_user
+		<where>
+			<if test="userId != null and userId != ''">
+				id = #{userId}
+			</if>
+		</where>
+		ORDER BY create_time DESC LIMIT #{offset}, #{limit}
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT count(*) FROM t_user
+		<where>
+			<if test="userId != null and userId != ''">
+				id = #{userId}
+			</if>
+		</where>
+	</select>
+
+	<select id="listUserAuthInformation" resultType="com.behere.platform.domain.UserAuth">
+		SELECT a.id,a.user_id,u.nick_name,u.age,u.gender,a.create_time,u.auth_video,a.status,
+		index_image,
+		identity_card
+		FROM t_user_auth AS a
+		LEFT JOIN t_user AS u ON a.user_id = u.id
+		<where>
+			<if test="userId != null and userId != ''">
+				a.user_id = #{userId}
+			</if>
+		</where>
+		ORDER BY a.status, a.create_time DESC
+		LIMIT #{offset}, #{limit}
+	</select>
+
+	<select id="countUserAuth" resultType="java.lang.Integer">
+		SELECT count(*) FROM t_user_auth
+		<where>
+			<if test="userId != null and userId != ''">
+				user_id = #{userId}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateUserAuth">
+		UPDATE
+			t_user
+		SET
+			auth = #{userAuth}
+		WHERE
+			id = #{userId}
+	</update>
+	
+	<update id="updateUserAuthInformation">
+		UPDATE
+			t_user_auth
+		SET
+			status = #{status}
+		WHERE
+			id = #{id}
+	</update>
+	
+	<update id="updateUserDeleted" >
+		UPDATE t_user SET deleted = #{deleted} WHERE id = #{userId}
+	</update>
+
+	<select id="queryUserById" resultType="com.behere.platform.domain.User">
+		SELECT * FROM t_user WHERE id = #{userId}
+	</select>
+</mapper>

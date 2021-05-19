@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.behere.portal.dao.LawappPoliceExamDao">
+    <resultMap id="BaseResultMap" type="com.behere.portal.domain.LawAppPoliceExam">
+        <id column="PRIMARY_ID" jdbcType="VARCHAR" property="id"/>
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+        <result column="POLICE_GENDER" jdbcType="VARCHAR" property="policeGender"/>
+        <result column="GMSFHM" jdbcType="VARCHAR" property="gmsfhm"/>
+        <result column="DWDM" jdbcType="VARCHAR" property="dwdm"/>
+        <result column="PARAMS" jdbcType="VARCHAR" property="params"/>
+        <result column="JZLB" jdbcType="VARCHAR" property="jzlb"/>
+        <result column="PWD" jdbcType="VARCHAR" property="pwd"/>
+        <result column="UNIT_ADDRESS" jdbcType="VARCHAR" property="unitAddress"/>
+        <result column="YHXMPY" jdbcType="VARCHAR" property="yhxmpy"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="DEPT_ID" jdbcType="VARCHAR" property="deptId"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="POLICE_POSITION" jdbcType="VARCHAR" property="policePosition"/>
+        <result column="JOB_LEVEL" jdbcType="VARCHAR" property="jobLevel"/>
+        <result column="FSZWJB" jdbcType="VARCHAR" property="fszwjb"/>
+        <result column="YHDWJB" jdbcType="VARCHAR" property="yhdwjb"/>
+        <result column="GZGW" jdbcType="VARCHAR" property="gzgw"/>
+        <result column="POLICE_PHONE" jdbcType="VARCHAR" property="policePhone"/>
+        <result column="MSGINIT" jdbcType="VARCHAR" property="msginit"/>
+        <result column="USER_IP" jdbcType="VARCHAR" property="userIp"/>
+        <result column="YXBS" jdbcType="VARCHAR" property="yxbs"/>
+        <result column="ISADMIN" jdbcType="VARCHAR" property="isadmin"/>
+        <result column="YHXLH" jdbcType="VARCHAR" property="yhxlh"/>
+        <result column="CZSJ" jdbcType="VARCHAR" property="czsj"/>
+        <result column="CZDW" jdbcType="VARCHAR" property="czdw"/>
+        <result column="CZR" jdbcType="VARCHAR" property="czr"/>
+        <result column="SFDG" jdbcType="VARCHAR" property="sfdg"/>
+        <result column="EMAIL" jdbcType="VARCHAR" property="email"/>
+        <result column="GZZT" jdbcType="VARCHAR" property="gzzt"/>
+        <result column="YWQXJB" jdbcType="VARCHAR" property="ywqxjb"/>
+        <result column="GLYLB" jdbcType="VARCHAR" property="glylb"/>
+        <result column="ZYJD" jdbcType="VARCHAR" property="zyjd"/>
+        <result column="FJH" jdbcType="VARCHAR" property="fjh"/>
+        <result column="BGSWX" jdbcType="VARCHAR" property="bgswx"/>
+        <result column="GAZX" jdbcType="VARCHAR" property="gazx"/>
+        <result column="SJXH" jdbcType="VARCHAR" property="sjxh"/>
+        <result column="STH" jdbcType="VARCHAR" property="sth"/>
+        <result column="XXZT" jdbcType="VARCHAR" property="xxzt"/>
+        <result column="WXH" jdbcType="VARCHAR" property="wxh"/>
+        <result column="YHBS" jdbcType="VARCHAR" property="yhbs"/>
+        <result column="KHHMC" jdbcType="VARCHAR" property="khhmc"/>
+        <result column="KHHDZ" jdbcType="VARCHAR" property="khhdz"/>
+        <result column="YHKH" jdbcType="VARCHAR" property="yhkh"/>
+        <result column="JWTHM" jdbcType="VARCHAR" property="jwthm"/>
+        <result column="GAEMAIL" jdbcType="VARCHAR" property="gaemail"/>
+        <result column="SFJDFZY" jdbcType="VARCHAR" property="sfjdfzy"/>
+        <result column="JWSBM" jdbcType="VARCHAR" property="jwsbm"/>
+        <result column="TIMESTAMP" jdbcType="VARCHAR" property="timestamp"/>
+        <result column="SIGNATURE" jdbcType="VARCHAR" property="signature"/>
+        <result column="DEVICE_ID" jdbcType="VARCHAR" property="deviceId"/>
+        <result column="REVISION" jdbcType="INTEGER" property="revision"/>
+        <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy"/>
+        <result column="CREATED_TIME" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy"/>
+        <result column="UPDATED_TIME" jdbcType="TIMESTAMP" property="updatedTime"/>
+        <result column="XP" jdbcType="LONGVARBINARY" property="xp"/>
+
+        <result column="INTERALNUM" property="interalnum" jdbcType="INTEGER"/>
+        <result column="NEWEXAMINNUM" property="newexaminnum" jdbcType="INTEGER"/>
+        
+         <result column="source" jdbcType="VARCHAR" property="source"/>
+         <result column="age" jdbcType="VARCHAR" property="age"/>
+         <result column="education" jdbcType="VARCHAR" property="education"/>
+         <result column="mz" jdbcType="VARCHAR" property="mz"/>
+         
+         <result column="UNIT_NAME" jdbcType="VARCHAR" property="unitName"/>
+        
+    </resultMap>
+    <sql id="Base_Column_List" >
+	    PRIMARY_ID, USER_NAME, POLICE_GENDER, GMSFHM, DWDM, PARAMS, JZLB, PWD, UNIT_ADDRESS, 
+	    YHXMPY, DESCRIPTION, DEPT_ID, USER_ID, POLICE_POSITION, JOB_LEVEL, FSZWJB, YHDWJB, 
+	    GZGW, POLICE_PHONE, MSGINIT, USER_IP, YXBS, ISADMIN, YHXLH, CZSJ, CZDW, CZR, SFDG, 
+	    EMAIL, GZZT, YWQXJB, GLYLB, ZYJD, FJH, BGSWX, GAZX, SJXH, STH, XXZT, WXH, YHBS, KHHMC, 
+	    KHHDZ, YHKH, JWTHM, GAEMAIL, SFJDFZY, JWSBM, INTERALNUM, NEWEXAMINNUM, DEVICE_ID, 
+	    REVISION, CREATE_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME, source, age, education, 
+	    mz,XP
+  </sql>
+
+
+    <select id="queryListPoliceExam" parameterType="com.behere.portal.domain.LawAppPoliceExam"
+            resultType="com.behere.portal.domain.LawAppPoliceExam">
+        SELECT 
+        	u.UNIT_NAME,
+         PRIMARY_ID, USER_NAME, POLICE_GENDER, GMSFHM, DWDM, PARAMS, JZLB, PWD, UNIT_ADDRESS, YHXMPY, DESCRIPTION, DEPT_ID, USER_ID, POLICE_POSITION, JOB_LEVEL, FSZWJB, YHDWJB, GZGW, POLICE_PHONE, MSGINIT, USER_IP, YXBS, ISADMIN, YHXLH, CZSJ, CZDW, CZR, SFDG, EMAIL, GZZT, YWQXJB, GLYLB, ZYJD, FJH, BGSWX, GAZX, SJXH, STH, XXZT, WXH, YHBS, KHHMC, KHHDZ, YHKH, JWTHM, GAEMAIL, SFJDFZY, JWSBM, INTERALNUM, NEWEXAMINNUM, DEVICE_ID, REVISION, CREATE_BY, CREATED_TIME, UPDATED_BY, UPDATED_TIME, source, age, education, mz,XP
+        FROM LAWAPP_POLICE_INFO a
+        <if test="deptId != null and deptId != ''">
+        RIGHT JOIN
+        </if>
+        <if test="deptId == null or deptId == ''">
+        	LEFT JOIN
+        </if>
+         (
+        	SELECT 
+				DISTINCT(a1.UNIT_ID),a1.UNIT_NAME,a1.PARENT_ID
+				from
+				LAWAPP_UNIT_INFO a1 
+				left join LAWAPP_UNIT_INFO a2
+				on(a1.PARENT_ID=a2.UNIT_ID)
+				left join LAWAPP_UNIT_INFO a3
+				on(a2.PARENT_ID=a3.UNIT_ID)
+				left join LAWAPP_UNIT_INFO a4
+				on(a3.PARENT_ID=a4.UNIT_ID)
+				left join LAWAPP_UNIT_INFO a5
+				on(a4.PARENT_ID=a5.UNIT_ID)
+				WHERE  
+					1=1
+				 <if test="deptId != null and deptId != ''">
+		           AND   
+					a1.PARENT_ID='${deptId}'
+					OR a2.PARENT_ID='${deptId}'
+					OR a3.PARENT_ID='${deptId}'
+					OR a4.PARENT_ID='${deptId}'
+					OR a5.PARENT_ID='${deptId}'
+					OR a1.UNIT_ID='${deptId}'
+		        </if>
+			) u ON a.DEPT_ID = u.UNIT_ID
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND USER_ID ='${userId}'
+        </if>
+        <if test="yhbs != null and yhbs != ''">
+            AND yhbs ='${yhbs}'
+        </if>
+        <if test="dwdm != null and dwdm != ''">
+            AND dwdm ='${dwdm}'
+        </if>
+         <if test="userName != null and userName != ''">
+            AND user_name ='${userName}'
+        </if>
+         <if test="policePhone != null and policePhone != ''">
+            AND POLICE_PHONE ='${policePhone}'
+        </if>
+         AND a.USER_ID is NOT NULL
+    </select>
+
+
+    <insert id="insert" parameterType="com.behere.portal.domain.LawAppPoliceExam">
+    insert into lawapp_police_info (PRIMARY_ID, USER_NAME, POLICE_GENDER, 
+      GMSFHM, DWDM, PARAMS, 
+      JZLB, PWD, UNIT_ADDRESS, 
+      YHXMPY, DESCRIPTION, DEPT_ID, 
+      USER_ID, POLICE_POSITION, JOB_LEVEL, 
+      FSZWJB, YHDWJB, GZGW, 
+      POLICE_PHONE, MSGINIT, USER_IP, 
+      YXBS, ISADMIN, YHXLH, 
+      CZSJ, CZDW, CZR, SFDG, 
+      EMAIL, GZZT, YWQXJB, 
+      GLYLB, ZYJD, FJH, BGSWX, 
+      GAZX, SJXH, STH, XXZT, 
+      WXH, YHBS, KHHMC, KHHDZ, 
+      YHKH, JWTHM, GAEMAIL, 
+      SFJDFZY, JWSBM, 
+       DEVICE_ID, REVISION, 
+      CREATE_BY, CREATED_TIME, UPDATED_BY, 
+      UPDATED_TIME,
+      INTERALNUM ,
+      NEWEXAMINNUM ,
+      SOURCE,
+      AGE,mz,
+      EDUCATION,
+       XP)
+    values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{policeGender,jdbcType=VARCHAR},
+      #{gmsfhm,jdbcType=VARCHAR}, #{dwdm,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, 
+      #{jzlb,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, #{unitAddress,jdbcType=VARCHAR}, 
+      #{yhxmpy,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{deptId,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{policePosition,jdbcType=VARCHAR}, #{jobLevel,jdbcType=VARCHAR}, 
+      #{fszwjb,jdbcType=VARCHAR}, #{yhdwjb,jdbcType=VARCHAR}, #{gzgw,jdbcType=VARCHAR}, 
+      #{policePhone,jdbcType=VARCHAR}, #{msginit,jdbcType=VARCHAR}, #{userIp,jdbcType=VARCHAR}, 
+      #{yxbs,jdbcType=VARCHAR}, #{isadmin,jdbcType=VARCHAR}, #{yhxlh,jdbcType=VARCHAR}, 
+      #{czsj,jdbcType=VARCHAR}, #{czdw,jdbcType=VARCHAR}, #{czr,jdbcType=VARCHAR}, #{sfdg,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{gzzt,jdbcType=VARCHAR}, #{ywqxjb,jdbcType=VARCHAR}, 
+      #{glylb,jdbcType=VARCHAR}, #{zyjd,jdbcType=VARCHAR}, #{fjh,jdbcType=VARCHAR}, #{bgswx,jdbcType=VARCHAR}, 
+      #{gazx,jdbcType=VARCHAR}, #{sjxh,jdbcType=VARCHAR}, #{sth,jdbcType=VARCHAR}, #{xxzt,jdbcType=VARCHAR}, 
+      #{wxh,jdbcType=VARCHAR}, #{yhbs,jdbcType=VARCHAR}, #{khhmc,jdbcType=VARCHAR}, #{khhdz,jdbcType=VARCHAR}, 
+      #{yhkh,jdbcType=VARCHAR}, #{jwthm,jdbcType=VARCHAR}, #{gaemail,jdbcType=VARCHAR}, 
+      #{sfjdfzy,jdbcType=VARCHAR}, #{jwsbm,jdbcType=VARCHAR}, 
+      #{deviceId,jdbcType=VARCHAR}, #{revision,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=VARCHAR},#{createdTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{updatedTime,jdbcType=TIMESTAMP},
+      #{interalnum,jdbcType=INTEGER},
+      #{newexaminnum,jdbcType=INTEGER},
+      #{source,jdbcType=VARCHAR},
+      #{age,jdbcType=VARCHAR}, #{mz,jdbcType=VARCHAR},
+      #{education,jdbcType=VARCHAR},
+         
+      #{xp,jdbcType=LONGVARBINARY})
+  </insert>
+  
+
+  
+
+    <update id="updateById" parameterType="com.behere.portal.domain.LawAppPoliceExam">
+        update lawapp_police_info
+        <set>
+            <if test="userName != null and userName != '' ">
+                USER_NAME = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="policeGender != null and policeGender != ''">
+                POLICE_GENDER = #{policeGender,jdbcType=VARCHAR},
+            </if>
+            <if test="gmsfhm != null and gmsfhm != ''">
+                GMSFHM = #{gmsfhm,jdbcType=VARCHAR},
+            </if>
+            <if test="dwdm != null and dwdm != '' ">
+                DWDM = #{dwdm,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null and params != '' ">
+                PARAMS = #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="jzlb != null and jzlb != '' ">
+                JZLB = #{jzlb,jdbcType=VARCHAR},
+            </if>
+            <if test="pwd != null and pwd != '' ">
+                PWD = #{pwd,jdbcType=VARCHAR},
+            </if>
+            <if test="unitAddress != null and unitAddress != ''">
+                UNIT_ADDRESS = #{unitAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="yhxmpy != null and yhxmpy != '' ">
+                YHXMPY = #{yhxmpy,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null and description != '' ">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null and deptId != '' ">
+                DEPT_ID = #{deptId,jdbcType=VARCHAR},
+            </if>
+            <if test="policePosition != null and policePosition != '' ">
+                POLICE_POSITION = #{policePosition,jdbcType=VARCHAR},
+            </if>
+            <if test="jobLevel != null and jobLevel != '' ">
+                JOB_LEVEL = #{jobLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="fszwjb != null and fszwjb != '' ">
+                FSZWJB = #{fszwjb,jdbcType=VARCHAR},
+            </if>
+            <if test="yhdwjb != null and yhdwjb != ''">
+                YHDWJB = #{yhdwjb,jdbcType=VARCHAR},
+            </if>
+            <if test="gzgw != null and gzgw != '' ">
+                GZGW = #{gzgw,jdbcType=VARCHAR},
+            </if>
+            <if test="policePhone != null and policePhone != '' ">
+                POLICE_PHONE = #{policePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="msginit != null and msginit != '' ">
+                MSGINIT = #{msginit,jdbcType=VARCHAR},
+            </if>
+            <if test="userIp != null and userIp != '' ">
+                USER_IP = #{userIp,jdbcType=VARCHAR},
+            </if>
+            <if test="yxbs != null and yxbs != '' ">
+                YXBS = #{yxbs,jdbcType=VARCHAR},
+            </if>
+            <if test="isadmin != null and isadmin != '' ">
+                ISADMIN = #{isadmin,jdbcType=VARCHAR},
+            </if>
+            <if test="yhxlh != null and yhxlh != '' ">
+                YHXLH = #{yhxlh,jdbcType=VARCHAR},
+            </if>
+            <if test="czsj != null and czsj != '' ">
+                CZSJ = #{czsj,jdbcType=VARCHAR},
+            </if>
+            <if test="czdw != null and czdw != '' ">
+                CZDW = #{czdw,jdbcType=VARCHAR},
+            </if>
+            <if test="czr != null and czr != ''  ">
+                CZR = #{czr,jdbcType=VARCHAR},
+            </if>
+            <if test="sfdg != null and sfdg != '' ">
+                SFDG = #{sfdg,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != '' ">
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="gzzt != null  and gzzt != '' ">
+                GZZT = #{gzzt,jdbcType=VARCHAR},
+            </if>
+            <if test="ywqxjb != null and ywqxjb != '' ">
+                YWQXJB = #{ywqxjb,jdbcType=VARCHAR},
+            </if>
+            <if test="glylb != null and glylb != ''">
+                GLYLB = #{glylb,jdbcType=VARCHAR},
+            </if>
+            <if test="zyjd != null and zyjd != '' ">
+                ZYJD = #{zyjd,jdbcType=VARCHAR},
+            </if>
+            <if test="fjh != null">
+                FJH = #{fjh,jdbcType=VARCHAR},
+            </if>
+            <if test="bgswx != null">
+                BGSWX = #{bgswx,jdbcType=VARCHAR},
+            </if>
+            <if test="gazx != null">
+                GAZX = #{gazx,jdbcType=VARCHAR},
+            </if>
+            <if test="sjxh != null">
+                SJXH = #{sjxh,jdbcType=VARCHAR},
+            </if>
+            <if test="sth != null">
+                STH = #{sth,jdbcType=VARCHAR},
+            </if>
+            <if test="xxzt != null">
+                XXZT = #{xxzt,jdbcType=VARCHAR},
+            </if>
+            <if test="wxh != null">
+                WXH = #{wxh,jdbcType=VARCHAR},
+            </if>
+            <if test="yhbs != null">
+                YHBS = #{yhbs,jdbcType=VARCHAR},
+            </if>
+            <if test="khhmc != null">
+                KHHMC = #{khhmc,jdbcType=VARCHAR},
+            </if>
+            <if test="khhdz != null">
+                KHHDZ = #{khhdz,jdbcType=VARCHAR},
+            </if>
+            <if test="yhkh != null">
+                YHKH = #{yhkh,jdbcType=VARCHAR},
+            </if>
+            <if test="jwthm != null">
+                JWTHM = #{jwthm,jdbcType=VARCHAR},
+            </if>
+            <if test="gaemail != null">
+                GAEMAIL = #{gaemail,jdbcType=VARCHAR},
+            </if>
+            <if test="sfjdfzy != null">
+                SFJDFZY = #{sfjdfzy,jdbcType=VARCHAR},
+            </if>
+            <if test="jwsbm != null">
+                JWSBM = #{jwsbm,jdbcType=VARCHAR},
+            </if>
+            <if test="interalnum != null">
+                INTERALNUM = #{interalnum,jdbcType=INTEGER},
+            </if>
+            <if test="newexaminnum != null">
+                NEWEXAMINNUM = #{newexaminnum,jdbcType=INTEGER},
+            </if>
+            <if test="deviceId != null">
+                DEVICE_ID = #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="revision != null">
+                REVISION = #{revision,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                CREATE_BY = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                CREATED_TIME = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updatedTime != null">
+                UPDATED_TIME = #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="xp != null">
+                XP = #{xp,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="source != null">
+                SOURCE = #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                AGE = #{age,jdbcType=VARCHAR},
+            </if>
+            <if test="mz != null">
+                mz = #{mz,jdbcType=VARCHAR},
+            </if>
+            <if test="education != null">
+                EDUCATION = #{education,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="qryUnitList" parameterType="java.util.Map" resultType="java.util.Map">
+    	SELECT
+			UNIT_ID,
+			UNIT_NAME,
+			PARENT_ID,
+			UNIT_LEVEL,
+			CREATE_USER,
+			CREATE_TIME,
+			MODIFY_USER,
+			MODIFY_TIME
+		FROM
+			LAWAPP_UNIT_INFO
+		WHERE
+			1 = 1
+			<if test="parentId != null and parentId !='' ">
+               and PARENT_ID = '${parentId}'
+            </if>
+            <if test="unitId != null and unitId !='' ">
+               and UNIT_ID = '${unitId}'
+            </if>
+            <if test="unitName != null and unitName !='' ">
+               and UNIT_NAME like '%${unitName}%'
+            </if>
+    
+    </select>
+    <delete id="delUserById" parameterType="com.behere.portal.domain.LawAppPoliceExam">
+	    delete from lawapp_police_info
+	    where USER_ID = #{userId,jdbcType=VARCHAR}
+	</delete>
+	
+	
+  <insert id="saveExamRole" parameterType="java.util.Map">
+  	insert into LAWAPP_EXAM_ROLE_INFO 
+  	(PAPER_ID,USER_ID,DEPT_ID,CREATE_USER,CREATE_TIME,MODIFY_USER,MODIFY_TIME) 
+  	values
+  	<foreach collection="exams" item="exam" separator=",">
+      (#{exam.paperId},#{exam.userId},#{exam.deptId},#{exam.createUser},#{exam.createTime},#{exam.modifyUser},#{exam.modifyTime})
+    </foreach>
+  </insert>
+  
+  <select id="qryByExamRole" parameterType="java.util.Map" resultType="java.util.Map">
+  	select * from  LAWAPP_EXAM_ROLE_INFO 
+  	where 1=1
+  	<if test="userId != null and userId !='' ">
+        and  USER_ID = '${userId}'
+    </if>
+    <if test="paperId != null and paperId !='' ">
+        and  PAPER_ID = '${paperId}'
+    </if>
+    <if test="deptId != null and deptId !='' ">
+        and  DEPT_ID = '${deptId}'
+    </if>
+  </select>
+  
+  <select id="getRoleExam" parameterType="java.util.Map" resultType="java.util.Map">
+  	SELECT level, DATA.* FROM( 
+		SELECT 
+		@ids as _ids, 
+		( SELECT @ids := GROUP_CONCAT(UNIT_ID) 
+		FROM lawapp_unit_info 
+		WHERE FIND_IN_SET(PARENT_ID, @ids) 
+		) as cids, 
+		@l := @l+1 as level 
+		FROM lawapp_unit_info, 
+		(SELECT @ids :='${deptId}', @l := 0 ) b 
+		WHERE @ids IS NOT NULL 
+		) UNIT_ID, lawapp_unit_info DATA 
+		WHERE FIND_IN_SET(DATA.UNIT_ID, _ids) 
+		ORDER BY level, UNIT_ID
+  </select>
+  
+      <select id="selectById" parameterType="com.behere.portal.domain.LawAppPoliceExam"
+            resultType="com.behere.portal.domain.LawAppPoliceExam">
+        SELECT a.PRIMARY_ID as id, a.*
+        FROM LAWAPP_POLICE_INFO a
+        where 1=1
+        <if test="deptId != null and deptId != ''">
+            AND DEPT_ID ='${deptId}'
+        </if>
+        <if test="userId != null and userId != ''">
+            AND USER_ID ='${userId}'
+        </if>
+        <if test="yhbs != null and yhbs != ''">
+            AND yhbs ='${yhbs}'
+        </if>
+        <if test="dwdm != null and dwdm != ''">
+            AND dwdm ='${dwdm}'
+        </if>
+         <if test="userName != null and userName != ''">
+            AND user_name ='${userName}'
+        </if>
+         <if test="policePhone != null and policePhone != ''">
+            AND POLICE_PHONE ='${policePhone}'
+        </if>
+    </select>
+    
+    <select id="qryDict" parameterType="java.util.Map" resultType="java.util.Map">
+    	SELECT id,`name` FROM lawapp_dict_code WHERE parentid='${pid}' ORDER BY  (id+0) 
+    </select>
+
+
+</mapper>

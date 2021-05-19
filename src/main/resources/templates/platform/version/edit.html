@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include::header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<input id="id" name="id" type="hidden" th:value="${version.id}">
+							<input id="forceUpdateValue" type="hidden" th:value="${version.forceUpdate}">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">版本号：</label>
+								<div class="col-sm-8">
+									<input id="versionNumber" name="versionNumber" class="form-control" type="text" th:value="${version.versionNumber}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">强制更新：</label>
+								<div class="col-sm-8">
+									<select id="forceUpdate" name="forceUpdate">
+										<option id="false" value="0">否</option>
+										<option id="true" value="1">是</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">URL：</label>
+								<div class="col-sm-8">
+									<input id="url" name="url" class="form-control" type="text" th:value="${version.url}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">更新内容：</label>
+								<div class="col-sm-8">
+									<textarea id="updateContent" name="updateContent" class="form-control" th:value="${version.url}"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary" onclick="update()">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script src="/js/appjs/platform/version/edit.js"></script>
+</body>
+
+<script>
+    $(document).ready(function(){
+		var forceUpdate = $("#forceUpdateValue").val();
+		if (forceUpdate == 0) {
+			$("#false").attr("selected", "selected");
+		} else {
+            $("#true").attr("selected", "selected");
+		}
+    });
+</script>
+</html>

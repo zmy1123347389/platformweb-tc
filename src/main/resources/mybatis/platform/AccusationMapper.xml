@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.behere.platform.dao.AccusationDao">
+
+	<select id="queryAccusations" resultType="com.behere.platform.domain.AccusationDO">
+		SELECT
+		    a.id,
+		    a.deleted,
+			u.id AS report_user_id,
+			reported.id AS reported_user_id,
+			accusation.content AS accusation,
+			a.content,
+			u.nick_name AS report_user_name,
+			reported.nick_name AS reported_user_name,
+			a.create_time,
+			a.deleted
+		FROM
+			t_accusation_information a
+		LEFT JOIN t_user u ON a.report_user_id = u.id
+		LEFT JOIN t_user reported ON reported.id = a.reported_user_id
+		LEFT JOIN t_accusation accusation ON a.accusation_id = accusation.id
+		ORDER BY
+			a.deleted ASC,
+			a.create_time DESC
+		LIMIT #{offset}, #{limit}
+	</select>
+    
+    <select id="count" resultType="int">
+        SELECT count(*) FROM t_accusation_information WHERE 1=1
+        <if test="deleted != -1">
+            AND deleted = #{deleted}
+        </if>
+        <if test="userId != null and userId != ''">
+            reported_user_id = #{userId}
+        </if>
+    </select>
+    
+    <select id="queryAccusationById" resultType="com.behere.platform.domain.AccusationDO">
+        SELECT * FROM t_accusation_information WHERE id = #{id}
+    </select>
+    
+    <update id="updateAccusationDealStatus">
+        UPDATE t_accusation_information SET deleted = #{deleted} WHERE id = #{id}
+    </update>
+	
+	<select id="queryAccusationPics" resultType="com.behere.platform.domain.AccusationPic">
+		SELECT * FROM t_accusation_pic WHERE report_id = #{reportId}
+	</select>
+	
+	<select id="queryReportContentByAccusationId" resultType="java.lang.String">
+		SELECT content FROM t_accusation WHERE id = #{accusationId}
+	</select>
+</mapper>
